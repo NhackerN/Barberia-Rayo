@@ -1,6 +1,7 @@
-import { Menu, X, Zap } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { useState } from 'react'
 import { NAV_LINKS, WHATSAPP_URL } from '../constants'
+import { LogoMark } from './LogoMark'
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -16,9 +17,7 @@ export function Navbar() {
           aria-label="Barbería Rayo inicio"
           onClick={closeMenu}
         >
-          <span className="grid h-10 w-10 shrink-0 place-items-center bg-rayo-yellow text-black transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105 sm:h-12 sm:w-12">
-            <Zap className="h-6 w-6 fill-current sm:h-8 sm:w-8" strokeWidth={2.5} />
-          </span>
+          <LogoMark className="h-10 w-10 transition-transform duration-300 group-hover:-rotate-3 group-hover:scale-105 sm:h-12 sm:w-12" />
           <span className="leading-none">
             <span className="block font-display text-[1.45rem] text-white sm:text-3xl">
               BARBERÍA RAYO

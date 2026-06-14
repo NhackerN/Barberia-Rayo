@@ -1,6 +1,7 @@
 import { ArrowRight, MessageCircle, Zap } from 'lucide-react'
 import heroImage from '../assets/barberia-rayo-hero.png'
 import { HERO_STATS, WHATSAPP_URL } from '../constants'
+import { LogoMark } from './LogoMark'
 
 export function Hero() {
   return (
@@ -84,9 +85,11 @@ export function Hero() {
               </div>
             ))}
           </div>
+
         </div>
       </div>
 
+      <LogoMark className="absolute bottom-28 right-10 z-10 hidden h-24 w-24 bg-black/60 p-1 backdrop-blur-md xl:grid" />
       <div className="absolute bottom-7 right-6 hidden h-64 w-24 rotate-12 bg-rayo-yellow/90 mix-blend-screen shadow-[0_0_70px_rgba(255,210,31,0.35)] lg:block" />
     </section>
   )

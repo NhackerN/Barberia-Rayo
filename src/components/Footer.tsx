@@ -1,5 +1,5 @@
-import { Zap } from 'lucide-react'
 import { NAV_LINKS, WHATSAPP_URL } from '../constants'
+import { LogoMark } from './LogoMark'
 
 export function Footer() {
   return (
@@ -7,9 +7,7 @@ export function Footer() {
       <div className="section-shell">
         <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
           <a href="#inicio" className="flex items-center gap-3">
-            <span className="grid h-12 w-12 place-items-center bg-rayo-yellow text-black">
-              <Zap className="h-8 w-8 fill-current" />
-            </span>
+            <LogoMark className="h-12 w-12" />
             <span className="leading-none">
               <span className="block font-display text-3xl text-white">
                 BARBERÍA RAYO
