@@ -32,37 +32,37 @@ export const SERVICES = [
     icon: 'scissors',
     title: 'Corte clásico',
     description: 'Líneas limpias, forma pulida y acabado exacto para todos los días.',
-    price: 'Desde $120',
+    price: '$130',
   },
   {
     icon: 'fade',
     title: 'Fade / Degradado',
     description: 'Transiciones suaves, contornos definidos y proporción a tu estilo.',
-    price: 'Desde $150',
+    price: '$130',
   },
   {
     icon: 'modern',
     title: 'Corte moderno',
     description: 'Textura, volumen y estructura con una lectura actual de tu imagen.',
-    price: 'Desde $160',
+    price: '$130',
   },
   {
     icon: 'beard',
     title: 'Perfilado de barba',
     description: 'Contorno nítido, simetría y detalle para una barba con presencia.',
-    price: 'Desde $100',
+    price: '$130',
   },
   {
     icon: 'razor',
     title: 'Afeitado',
     description: 'Ritual preciso con acabado limpio y sensación fresca.',
-    price: 'Desde $100',
+    price: '$130',
   },
   {
     icon: 'combo',
     title: 'Corte + Barba',
     description: 'Servicio completo para salir con corte, barba y actitud alineados.',
-    price: 'Desde $220',
+    price: '$130',
   },
 ] as const
 
