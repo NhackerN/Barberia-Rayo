@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color: #ffffff;
+    background: #050505;
+    font-family: Inter, Sora, system-ui, sans-serif;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background: #050505;
+  }
+
+  body {
+    min-width: 320px;
+    margin: 0;
+    overflow-x: hidden;
+    background:
+      radial-gradient(circle at 18% 10%, rgba(255, 210, 31, 0.08), transparent 28%),
+      #050505;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ::selection {
+    background: #ffd21f;
+    color: #050505;
+  }
+}
+
+@layer components {
+  .section-shell {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-band {
+    @apply border-y border-white/10 bg-[#080808] py-24 sm:py-32;
+  }
+
+  .section-heading {
+    @apply max-w-3xl;
+  }
+
+  .section-heading p {
+    @apply mt-5 text-lg leading-8 text-rayo-muted;
+  }
+
+  .section-kicker {
+    @apply inline-flex border border-rayo-yellow/50 bg-rayo-yellow/10 px-4 py-2 text-sm font-extrabold uppercase text-rayo-yellow;
+  }
+
+  .display-title {
+    @apply font-display text-6xl leading-none text-white sm:text-7xl lg:text-8xl;
+  }
+
+  .premium-button {
+    @apply inline-flex items-center gap-3 bg-rayo-yellow font-extrabold text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-rayo-amber hover:shadow-[0_0_34px_rgba(255,210,31,0.34)] focus:outline-none focus:ring-2 focus:ring-rayo-yellow focus:ring-offset-2 focus:ring-offset-black;
+  }
+
+  .outline-button {
+    @apply inline-flex items-center gap-3 border border-rayo-yellow bg-black/40 font-extrabold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-rayo-yellow hover:text-black focus:outline-none focus:ring-2 focus:ring-rayo-yellow focus:ring-offset-2 focus:ring-offset-black;
+  }
+}
+
+@layer utilities {
+  .hero-image {
+    filter: saturate(0.75) contrast(1.12);
+  }
+
+  .gallery-tile::before {
+    content: '';
+    position: absolute;
+    inset: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transform: skew(-8deg);
+  }
+
+  .map-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 45%, rgba(255, 210, 31, 0.12));
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
