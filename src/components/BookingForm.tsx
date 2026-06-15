@@ -188,7 +188,8 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-2xl mx-auto"
+      className="max-w-2xl mx-auto relative z-20"
+      style={{ touchAction: 'manipulation' }}
     >
       <div className="grid gap-8">
         {/* Información Personal */}
@@ -214,9 +215,10 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
                 onInput={handleInput}
                 placeholder="Tu nombre"
                 autoComplete="name"
-                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
+                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 relative z-30 pointer-events-auto ${
                   errors.fullName ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
                 }`}
+                style={{ touchAction: 'manipulation', minHeight: '48px', fontSize: '16px' }}
               />
               {errors.fullName && (
                 <p className="text-sm text-red-500">{errors.fullName}</p>
@@ -236,9 +238,10 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
                 onInput={handleInput}
                 placeholder="+55 1234 5678"
                 autoComplete="tel"
-                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
+                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 relative z-30 pointer-events-auto ${
                   errors.phone ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
                 }`}
+                style={{ touchAction: 'manipulation', minHeight: '48px', fontSize: '16px' }}
               />
               {errors.phone && (
                 <p className="text-sm text-red-500">{errors.phone}</p>
@@ -259,9 +262,10 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
               onInput={handleInput}
               placeholder="tu@email.com"
               autoComplete="email"
-              className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
+              className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 relative z-30 pointer-events-auto ${
                 errors.email ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
               }`}
+              style={{ touchAction: 'manipulation', minHeight: '48px', fontSize: '16px' }}
             />
             {errors.email && (
               <p className="text-sm text-red-500">{errors.email}</p>
@@ -334,9 +338,10 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
                 value={formData.date}
                 onChange={handleChange}
                 onInput={handleInput}
-                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white ${
+                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white relative z-30 pointer-events-auto ${
                   errors.date ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
                 }`}
+                style={{ touchAction: 'manipulation', minHeight: '48px', fontSize: '16px' }}
               />
               {errors.date && (
                 <p className="text-sm text-red-500">{errors.date}</p>
@@ -354,9 +359,10 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
                 value={formData.time}
                 onChange={handleChange}
                 onInput={handleInput}
-                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white ${
+                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white relative z-30 pointer-events-auto ${
                   errors.time ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
                 }`}
+                style={{ touchAction: 'manipulation', minHeight: '48px', fontSize: '16px' }}
               />
               {errors.time && (
                 <p className="text-sm text-red-500">{errors.time}</p>
@@ -386,7 +392,8 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
               onInput={handleInput}
               placeholder="Describa el estilo, largo, detalles que desea..."
               rows={3}
-              className="w-full px-4 py-3 bg-rayo-panel border border-white/10 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 hover:border-white/20 resize-none"
+              className="w-full px-4 py-3 bg-rayo-panel border border-white/10 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 hover:border-white/20 resize-none relative z-30 pointer-events-auto"
+              style={{ touchAction: 'manipulation', minHeight: '120px', fontSize: '16px' }}
             />
           </div>
 
@@ -402,7 +409,8 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
               onInput={handleInput}
               placeholder="Comparte referencias, fotos o cualquier comentario adicional..."
               rows={3}
-              className="w-full px-4 py-3 bg-rayo-panel border border-white/10 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 hover:border-white/20 resize-none"
+              className="w-full px-4 py-3 bg-rayo-panel border border-white/10 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 hover:border-white/20 resize-none relative z-30 pointer-events-auto"
+              style={{ touchAction: 'manipulation', minHeight: '120px', fontSize: '16px' }}
             />
           </div>
         </fieldset>
@@ -423,7 +431,8 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
               name="wantContact"
               checked={formData.wantContact}
               onChange={handleChange}
-              className="w-5 h-5 mt-1 accent-rayo-yellow cursor-pointer border border-white/20 rounded"
+              className="w-5 h-5 mt-1 accent-rayo-yellow cursor-pointer border border-white/20 rounded relative z-30 pointer-events-auto"
+              style={{ touchAction: 'manipulation' }}
             />
             <label htmlFor="wantContact" className="text-sm text-white">
               <span className="font-semibold">¿Deseas que nos pongamos en contacto?</span>
@@ -444,7 +453,8 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
                     value="whatsapp"
                     checked={formData.contactMethod === 'whatsapp'}
                     onChange={handleChange}
-                    className="w-4 h-4 accent-rayo-yellow cursor-pointer"
+                    className="w-4 h-4 accent-rayo-yellow cursor-pointer relative z-30 pointer-events-auto"
+                    style={{ touchAction: 'manipulation' }}
                   />
                   <span className="text-sm text-white font-semibold">WhatsApp</span>
                 </label>
@@ -456,7 +466,8 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
                     value="email"
                     checked={formData.contactMethod === 'email'}
                     onChange={handleChange}
-                    className="w-4 h-4 accent-rayo-yellow cursor-pointer"
+                    className="w-4 h-4 accent-rayo-yellow cursor-pointer relative z-30 pointer-events-auto"
+                    style={{ touchAction: 'manipulation' }}
                   />
                   <span className="text-sm text-white font-semibold">Correo electrónico</span>
                 </label>
@@ -468,7 +479,8 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
                     value="both"
                     checked={formData.contactMethod === 'both'}
                     onChange={handleChange}
-                    className="w-4 h-4 accent-rayo-yellow cursor-pointer"
+                    className="w-4 h-4 accent-rayo-yellow cursor-pointer relative z-30 pointer-events-auto"
+                    style={{ touchAction: 'manipulation' }}
                   />
                   <span className="text-sm text-white font-semibold">Ambos</span>
                 </label>
@@ -490,7 +502,8 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
               name="acceptTerms"
               checked={formData.acceptTerms}
               onChange={handleChange}
-              className="w-5 h-5 mt-1 accent-rayo-yellow cursor-pointer border border-white/20 rounded"
+              className="w-5 h-5 mt-1 accent-rayo-yellow cursor-pointer border border-white/20 rounded relative z-30 pointer-events-auto"
+              style={{ touchAction: 'manipulation' }}
             />
             <label htmlFor="acceptTerms" className="text-sm text-white">
               <span className="font-semibold">Acepto ser contactado</span>
@@ -507,7 +520,8 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="premium-button w-full justify-center px-8 py-4 text-base disabled:opacity-50 disabled:cursor-not-allowed"
+          className="premium-button w-full justify-center px-8 py-4 text-base disabled:opacity-50 disabled:cursor-not-allowed relative z-30 pointer-events-auto"
+          style={{ touchAction: 'manipulation', minHeight: '48px', fontSize: '16px' }}
         >
           {isSubmitting ? 'Enviando...' : 'Agendar cita'}
         </button>

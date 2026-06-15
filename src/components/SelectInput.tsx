@@ -28,9 +28,10 @@ export default function SelectInput({
         name={name}
         value={value}
         onChange={onChange}
-        className={`w-full px-4 py-3 pr-12 bg-rayo-panel border rounded text-white cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow appearance-none ${
+        className={`w-full px-4 py-3 pr-12 bg-rayo-panel border rounded text-white cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow appearance-none relative z-30 pointer-events-auto ${
           hasError ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
         }`}
+        style={{ touchAction: 'manipulation', minHeight: '48px' }}
       >
         {firstOptionEmpty && <option value="">{placeholder}</option>}
         {options.map((option) => (

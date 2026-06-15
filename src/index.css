@@ -81,6 +81,10 @@
     appearance: none;
     font-size: 16px;
     -webkit-tap-highlight-color: transparent;
+    pointer-events: auto;
+    position: relative;
+    z-index: 30;
+    touch-action: manipulation;
   }
 
   select {
@@ -99,11 +103,16 @@
 
   input[type='checkbox'],
   input[type='radio'] {
-    -webkit-appearance: checkbox;
-    appearance: checkbox;
     width: 1.25rem;
     height: 1.25rem;
     cursor: pointer;
+    pointer-events: auto;
+    position: relative;
+    z-index: 30;
+  }
+
+  ::placeholder {
+    -webkit-font-smoothing: antialiased;
   }
 }
 
