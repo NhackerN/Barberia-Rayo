@@ -7,7 +7,7 @@ import BookingPage from './pages/BookingPage'
 function App() {
   return (
     <Router>
-      <div className="min-h-screen overflow-hidden bg-rayo-black text-white">
+      <div className="min-h-screen overflow-x-hidden bg-rayo-black text-white">
         <Navbar />
         <main>
           <Routes>

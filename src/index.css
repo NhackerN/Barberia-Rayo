@@ -76,20 +76,10 @@
   input,
   select,
   textarea {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
     font-size: 16px;
     -webkit-tap-highlight-color: transparent;
     pointer-events: auto;
-    position: relative;
-    z-index: 30;
     touch-action: manipulation;
-  }
-
-  select {
-    background-image: none;
-    padding-right: 1rem;
   }
 
   input[type='text'],
@@ -107,8 +97,6 @@
     height: 1.25rem;
     cursor: pointer;
     pointer-events: auto;
-    position: relative;
-    z-index: 30;
   }
 
   ::placeholder {

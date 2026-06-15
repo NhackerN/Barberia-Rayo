@@ -10,8 +10,8 @@ export function Navbar() {
   const closeMenu = () => setIsOpen(false)
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 py-3 sm:px-6">
-      <nav className="relative mx-auto flex w-full max-w-7xl items-center justify-between border border-white/10 bg-black/55 px-3 py-3 pr-16 shadow-rayo backdrop-blur-xl sm:pl-5 sm:pr-16 lg:px-7">
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-4 py-3 sm:px-6">
+      <nav className="pointer-events-auto relative mx-auto flex w-full max-w-7xl items-center justify-between border border-white/10 bg-black/55 px-3 py-3 pr-16 shadow-rayo backdrop-blur-xl sm:pl-5 sm:pr-16 lg:px-7">
         <Link
           to="/"
           className="group flex items-center gap-3"
@@ -63,9 +63,9 @@ export function Navbar() {
       </nav>
 
       <div
-        className={`mx-auto mt-2 max-w-7xl border border-white/10 bg-black/90 p-4 shadow-rayo backdrop-blur-xl transition-all duration-300 lg:hidden ${
+        className={`absolute left-4 right-4 top-full mx-auto mt-2 max-w-7xl border border-white/10 bg-black/90 p-4 shadow-rayo backdrop-blur-xl transition-all duration-300 lg:hidden ${
           isOpen
-            ? 'translate-y-0 opacity-100'
+            ? 'pointer-events-auto translate-y-0 opacity-100'
             : 'pointer-events-none -translate-y-2 opacity-0'
         }`}
       >
