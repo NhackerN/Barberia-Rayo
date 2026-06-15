@@ -113,17 +113,41 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
         [name]: (e.target as HTMLInputElement).checked,
       })
     } else {
-      setFormData({
-        ...formData,
+      setFormData((prev) => ({
+        ...prev,
         [name]: value,
-      })
+      }))
     }
 
     if (errors[name]) {
-      setErrors({
-        ...errors,
+      setErrors((prev) => ({
+        ...prev,
         [name]: '',
-      })
+      }))
+    }
+  }
+
+  const handleInput = (e: React.FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const target = e.target as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    const { name, value, type } = target
+
+    if (type === 'checkbox') {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: (target as HTMLInputElement).checked,
+      }))
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }))
+    }
+
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: '',
+      }))
     }
   }
 
@@ -187,7 +211,9 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleChange}
+                onInput={handleInput}
                 placeholder="Tu nombre"
+                autoComplete="name"
                 className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
                   errors.fullName ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
                 }`}
@@ -207,7 +233,9 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
+                onInput={handleInput}
                 placeholder="+55 1234 5678"
+                autoComplete="tel"
                 className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
                   errors.phone ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
                 }`}
@@ -228,7 +256,9 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              onInput={handleInput}
               placeholder="tu@email.com"
+              autoComplete="email"
               className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
                 errors.email ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
               }`}
@@ -303,6 +333,7 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
                 name="date"
                 value={formData.date}
                 onChange={handleChange}
+                onInput={handleInput}
                 className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white ${
                   errors.date ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
                 }`}
@@ -322,6 +353,7 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
                 name="time"
                 value={formData.time}
                 onChange={handleChange}
+                onInput={handleInput}
                 className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white ${
                   errors.time ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
                 }`}
@@ -351,6 +383,7 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
               name="description"
               value={formData.description}
               onChange={handleChange}
+              onInput={handleInput}
               placeholder="Describa el estilo, largo, detalles que desea..."
               rows={3}
               className="w-full px-4 py-3 bg-rayo-panel border border-white/10 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 hover:border-white/20 resize-none"
@@ -366,6 +399,7 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
               name="comments"
               value={formData.comments}
               onChange={handleChange}
+              onInput={handleInput}
               placeholder="Comparte referencias, fotos o cualquier comentario adicional..."
               rows={3}
               className="w-full px-4 py-3 bg-rayo-panel border border-white/10 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 hover:border-white/20 resize-none"
