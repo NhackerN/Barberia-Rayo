@@ -1,0 +1,70 @@
+import { useState } from 'react'
+import { ArrowLeft, CheckCircle } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import BookingForm from '../components/BookingForm'
+
+export default function BookingPage() {
+  const navigate = useNavigate()
+  const [isSubmitted, setIsSubmitted] = useState(false)
+
+  const handleSubmit = () => {
+    setIsSubmitted(true)
+  }
+
+  const handleBackHome = () => {
+    navigate('/')
+  }
+
+  if (isSubmitted) {
+    return (
+      <div className="min-h-[calc(100vh-200px)] flex items-center justify-center px-4 py-24">
+        <div className="max-w-md w-full text-center">
+          <div className="mb-6 flex justify-center">
+            <CheckCircle className="h-20 w-20 text-rayo-yellow animate-pulse" />
+          </div>
+          <h2 className="font-display text-4xl text-white mb-4">
+            ¡Solicitud enviada!
+          </h2>
+          <p className="text-rayo-muted mb-8 text-lg leading-7">
+            Tu solicitud fue enviada correctamente. Nos pondremos en contacto contigo para confirmar tu cita.
+          </p>
+          <button
+            onClick={handleBackHome}
+            className="premium-button justify-center px-8 py-4 w-full"
+          >
+            <ArrowLeft className="h-5 w-5" />
+            Volver al inicio
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="bg-rayo-black">
+      <section className="border-b border-white/10 bg-[#080808] py-16 sm:py-20">
+        <div className="section-shell">
+          <button
+            onClick={handleBackHome}
+            className="inline-flex items-center gap-2 mb-6 text-rayo-yellow hover:text-rayo-amber transition-colors font-semibold"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Volver
+          </button>
+          <h1 className="font-display text-5xl sm:text-6xl text-white mb-4">
+            Agenda tu cita
+          </h1>
+          <p className="text-lg text-rayo-muted max-w-2xl">
+            Cuéntanos qué servicio deseas y nos pondremos en contacto para confirmar tu horario.
+          </p>
+        </div>
+      </section>
+
+      <section className="py-16 sm:py-24">
+        <div className="section-shell">
+          <BookingForm onSubmit={handleSubmit} />
+        </div>
+      </section>
+    </div>
+  )
+}

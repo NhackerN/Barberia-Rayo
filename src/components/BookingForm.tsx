@@ -1,0 +1,419 @@
+import { useState } from 'react'
+import { Mail, Phone, User, Zap } from 'lucide-react'
+
+interface FormData {
+  fullName: string
+  phone: string
+  email: string
+  service: string
+  barber: string
+  date: string
+  time: string
+  description: string
+  comments: string
+  acceptTerms: boolean
+}
+
+interface FormErrors {
+  [key: string]: string
+}
+
+const SERVICES = [
+  'Corte clásico',
+  'Corte moderno',
+  'Fade',
+  'Corte + Barba',
+  'Perfilado de barba',
+  'Diseño personalizado',
+  'Otro',
+]
+
+const BARBERS = [
+  'Sin preferencia',
+  'Barbero 1',
+  'Barbero 2',
+  'Barbero 3',
+]
+
+interface BookingFormProps {
+  onSubmit: () => void
+}
+
+export default function BookingForm({ onSubmit }: BookingFormProps) {
+  const [formData, setFormData] = useState<FormData>({
+    fullName: '',
+    phone: '',
+    email: '',
+    service: '',
+    barber: 'Sin preferencia',
+    date: '',
+    time: '',
+    description: '',
+    comments: '',
+    acceptTerms: false,
+  })
+
+  const [errors, setErrors] = useState<FormErrors>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {}
+
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = 'El nombre es requerido'
+    }
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'El teléfono es requerido'
+    } else if (!/^[0-9\s\-+()]+$/.test(formData.phone)) {
+      newErrors.phone = 'Ingresa un teléfono válido'
+    }
+
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Ingresa un correo válido'
+    }
+
+    if (!formData.service) {
+      newErrors.service = 'Selecciona un servicio'
+    }
+
+    if (!formData.date) {
+      newErrors.date = 'Selecciona una fecha'
+    }
+
+    if (!formData.time) {
+      newErrors.time = 'Selecciona una hora'
+    }
+
+    if (!formData.acceptTerms) {
+      newErrors.acceptTerms = 'Debes aceptar ser contactado'
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value, type } = e.target
+
+    if (type === 'checkbox') {
+      setFormData({
+        ...formData,
+        [name]: (e.target as HTMLInputElement).checked,
+      })
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      })
+    }
+
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: '',
+      })
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    if (!validateForm()) {
+      return
+    }
+
+    setIsSubmitting(true)
+
+    // TODO: Guardar cita en Supabase
+    // const { data, error } = await supabase
+    //   .from('bookings')
+    //   .insert([formData])
+
+    // TODO: Crear evento en Google Calendar
+    // const event = {
+    //   summary: `Cita: ${formData.fullName}`,
+    //   description: `Servicio: ${formData.service}`,
+    //   start: { dateTime: `${formData.date}T${formData.time}` },
+    // }
+
+    // TODO: Enviar confirmación por WhatsApp
+    // await fetch('/api/send-whatsapp', {
+    //   method: 'POST',
+    //   body: JSON.stringify({ phone: formData.phone, ... })
+    // })
+
+    // Simular envío
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+
+    setIsSubmitting(false)
+    onSubmit()
+  }
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-2xl mx-auto"
+    >
+      <div className="grid gap-8">
+        {/* Información Personal */}
+        <fieldset className="space-y-4">
+          <legend className="flex items-center gap-2 mb-6">
+            <Zap className="h-5 w-5 text-rayo-yellow" />
+            <span className="font-display text-2xl text-white">
+              Información personal
+            </span>
+          </legend>
+
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label htmlFor="fullName" className="block text-sm font-semibold text-white">
+                Nombre completo <span className="text-rayo-yellow">*</span>
+              </label>
+              <div className="relative">
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-rayo-yellow/50 pointer-events-none" />
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  placeholder="Tu nombre"
+                  className={`w-full pl-12 pr-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
+                    errors.fullName ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
+                  }`}
+                />
+              </div>
+              {errors.fullName && (
+                <p className="text-sm text-red-500">{errors.fullName}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="phone" className="block text-sm font-semibold text-white">
+                Teléfono / WhatsApp <span className="text-rayo-yellow">*</span>
+              </label>
+              <div className="relative">
+                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-rayo-yellow/50 pointer-events-none" />
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="+55 1234 5678"
+                  className={`w-full pl-12 pr-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
+                    errors.phone ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
+                  }`}
+                />
+              </div>
+              {errors.phone && (
+                <p className="text-sm text-red-500">{errors.phone}</p>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="email" className="block text-sm font-semibold text-white">
+              Correo electrónico
+            </label>
+            <div className="relative">
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-rayo-yellow/50 pointer-events-none" />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="tu@email.com"
+                className={`w-full pl-12 pr-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
+                  errors.email ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
+                }`}
+              />
+            </div>
+            {errors.email && (
+              <p className="text-sm text-red-500">{errors.email}</p>
+            )}
+          </div>
+        </fieldset>
+
+        {/* Servicio */}
+        <fieldset className="space-y-4">
+          <legend className="flex items-center gap-2 mb-6">
+            <Zap className="h-5 w-5 text-rayo-yellow" />
+            <span className="font-display text-2xl text-white">
+              Servicio
+            </span>
+          </legend>
+
+          <div className="space-y-2">
+            <label htmlFor="service" className="block text-sm font-semibold text-white">
+              ¿Qué servicio deseas? <span className="text-rayo-yellow">*</span>
+            </label>
+            <select
+              id="service"
+              name="service"
+              value={formData.service}
+              onChange={handleChange}
+              className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white cursor-pointer ${
+                errors.service ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
+              }`}
+            >
+              <option value="">Selecciona un servicio</option>
+              {SERVICES.map((service) => (
+                <option key={service} value={service}>
+                  {service}
+                </option>
+              ))}
+            </select>
+            {errors.service && (
+              <p className="text-sm text-red-500">{errors.service}</p>
+            )}
+          </div>
+        </fieldset>
+
+        {/* Preferencias */}
+        <fieldset className="space-y-4">
+          <legend className="flex items-center gap-2 mb-6">
+            <Zap className="h-5 w-5 text-rayo-yellow" />
+            <span className="font-display text-2xl text-white">
+              Preferencias
+            </span>
+          </legend>
+
+          <div className="grid sm:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <label htmlFor="barber" className="block text-sm font-semibold text-white">
+                Barbero preferido
+              </label>
+              <select
+                id="barber"
+                name="barber"
+                value={formData.barber}
+                onChange={handleChange}
+                className="w-full px-4 py-3 bg-rayo-panel border border-white/10 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white hover:border-white/20 cursor-pointer"
+              >
+                {BARBERS.map((barber) => (
+                  <option key={barber} value={barber}>
+                    {barber}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="date" className="block text-sm font-semibold text-white">
+                Fecha deseada <span className="text-rayo-yellow">*</span>
+              </label>
+              <input
+                type="date"
+                id="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white ${
+                  errors.date ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
+                }`}
+              />
+              {errors.date && (
+                <p className="text-sm text-red-500">{errors.date}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="time" className="block text-sm font-semibold text-white">
+                Hora deseada <span className="text-rayo-yellow">*</span>
+              </label>
+              <input
+                type="time"
+                id="time"
+                name="time"
+                value={formData.time}
+                onChange={handleChange}
+                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white ${
+                  errors.time ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
+                }`}
+              />
+              {errors.time && (
+                <p className="text-sm text-red-500">{errors.time}</p>
+              )}
+            </div>
+          </div>
+        </fieldset>
+
+        {/* Detalles */}
+        <fieldset className="space-y-4">
+          <legend className="flex items-center gap-2 mb-6">
+            <Zap className="h-5 w-5 text-rayo-yellow" />
+            <span className="font-display text-2xl text-white">
+              Detalles
+            </span>
+          </legend>
+
+          <div className="space-y-2">
+            <label htmlFor="description" className="block text-sm font-semibold text-white">
+              ¿Cómo te gustaría tu corte?
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Describa el estilo, largo, detalles que desea..."
+              rows={3}
+              className="w-full px-4 py-3 bg-rayo-panel border border-white/10 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 hover:border-white/20 resize-none"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="comments" className="block text-sm font-semibold text-white">
+              Referencias o comentarios adicionales
+            </label>
+            <textarea
+              id="comments"
+              name="comments"
+              value={formData.comments}
+              onChange={handleChange}
+              placeholder="Comparte referencias, fotos o cualquier comentario adicional..."
+              rows={3}
+              className="w-full px-4 py-3 bg-rayo-panel border border-white/10 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 hover:border-white/20 resize-none"
+            />
+          </div>
+        </fieldset>
+
+        {/* Confirmación */}
+        <fieldset className="space-y-4">
+          <div className="flex items-start gap-3">
+            <input
+              type="checkbox"
+              id="acceptTerms"
+              name="acceptTerms"
+              checked={formData.acceptTerms}
+              onChange={handleChange}
+              className="w-5 h-5 mt-1 accent-rayo-yellow cursor-pointer border border-white/20 rounded"
+            />
+            <label htmlFor="acceptTerms" className="text-sm text-white">
+              <span className="font-semibold">Acepto ser contactado</span>
+              <span className="text-rayo-muted"> para confirmar mi cita </span>
+              <span className="text-rayo-yellow">*</span>
+            </label>
+          </div>
+          {errors.acceptTerms && (
+            <p className="text-sm text-red-500 ml-8">{errors.acceptTerms}</p>
+          )}
+        </fieldset>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="premium-button w-full justify-center px-8 py-4 text-base disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isSubmitting ? 'Enviando...' : 'Agendar cita'}
+        </button>
+      </div>
+    </form>
+  )
+}

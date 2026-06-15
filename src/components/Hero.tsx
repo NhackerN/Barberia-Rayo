@@ -1,6 +1,7 @@
-import { ArrowRight, MessageCircle, Zap } from 'lucide-react'
+import { ArrowRight, Zap } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import heroImage from '../assets/barberia-rayo-hero.png'
-import { HERO_STATS, WHATSAPP_URL } from '../constants'
+import { HERO_STATS } from '../constants'
 import { LogoMark } from './LogoMark'
 
 export function Hero() {
@@ -50,15 +51,12 @@ export function Hero() {
           </p>
 
           <div className="mt-7 flex flex-col gap-4 sm:flex-row">
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              to="/agendar"
               className="premium-button justify-center px-7 py-4 text-base"
             >
-              <MessageCircle className="h-5 w-5" />
-              Agendar por WhatsApp
-            </a>
+              Agendar cita
+            </Link>
             <a
               href="#servicios"
               className="outline-button justify-center px-7 py-4 text-base"

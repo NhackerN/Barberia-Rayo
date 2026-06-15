@@ -1,24 +1,23 @@
-import { Experience } from './components/Experience'
-import { Footer } from './components/Footer'
-import { Gallery } from './components/Gallery'
-import { Hero } from './components/Hero'
-import { Location } from './components/Location'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Navbar } from './components/Navbar'
-import { Services } from './components/Services'
+import { Footer } from './components/Footer'
+import HomePage from './pages/HomePage'
+import BookingPage from './pages/BookingPage'
 
 function App() {
   return (
-    <div className="min-h-screen overflow-hidden bg-rayo-black text-white">
-      <Navbar />
-      <main>
-        <Hero />
-        <Services />
-        <Experience />
-        <Gallery />
-        <Location />
-      </main>
-      <Footer />
-    </div>
+    <Router>
+      <div className="min-h-screen overflow-hidden bg-rayo-black text-white">
+        <Navbar />
+        <main>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/agendar" element={<BookingPage />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
   )
 }
 

@@ -1,6 +1,7 @@
 import { Menu, X } from 'lucide-react'
 import { useState } from 'react'
-import { NAV_LINKS, WHATSAPP_URL } from '../constants'
+import { Link } from 'react-router-dom'
+import { NAV_LINKS } from '../constants'
 import { LogoMark } from './LogoMark'
 
 export function Navbar() {
@@ -11,8 +12,8 @@ export function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-4 py-3 sm:px-6">
       <nav className="relative mx-auto flex w-full max-w-7xl items-center justify-between border border-white/10 bg-black/55 px-3 py-3 pr-16 shadow-rayo backdrop-blur-xl sm:pl-5 sm:pr-16 lg:px-7">
-        <a
-          href="#inicio"
+        <Link
+          to="/"
           className="group flex items-center gap-3"
           aria-label="Barbería Rayo inicio"
           onClick={closeMenu}
@@ -26,7 +27,7 @@ export function Navbar() {
               CHIMALHUACÁN
             </span>
           </span>
-        </a>
+        </Link>
 
         <div className="hidden items-center gap-7 lg:flex">
           {NAV_LINKS.map((link) => (
@@ -42,14 +43,12 @@ export function Navbar() {
         </div>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noreferrer"
+          <Link
+            to="/agendar"
             className="premium-button px-8 py-4 text-sm"
           >
             Agendar
-          </a>
+          </Link>
         </div>
 
         <button
@@ -81,15 +80,13 @@ export function Navbar() {
               {link.label}
             </a>
           ))}
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noreferrer"
+          <Link
+            to="/agendar"
             className="premium-button mt-2 justify-center px-5 py-4"
             onClick={closeMenu}
           >
             Agendar
-          </a>
+          </Link>
         </div>
       </div>
     </header>
