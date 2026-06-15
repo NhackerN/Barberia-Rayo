@@ -13,6 +13,8 @@ interface FormData {
   description: string
   comments: string
   acceptTerms: boolean
+  wantContact: boolean
+  contactMethod: 'whatsapp' | 'email' | 'both' | ''
 }
 
 interface FormErrors {
@@ -52,6 +54,8 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
     description: '',
     comments: '',
     acceptTerms: false,
+    wantContact: false,
+    contactMethod: '',
   })
 
   const [errors, setErrors] = useState<FormErrors>({})
@@ -88,6 +92,10 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
 
     if (!formData.acceptTerms) {
       newErrors.acceptTerms = 'Debes aceptar ser contactado'
+    }
+
+    if (formData.wantContact && !formData.contactMethod) {
+      newErrors.contactMethod = 'Selecciona un método de contacto'
     }
 
     setErrors(newErrors)
@@ -372,6 +380,80 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
               className="w-full px-4 py-3 bg-rayo-panel border border-white/10 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 hover:border-white/20 resize-none"
             />
           </div>
+        </fieldset>
+
+        {/* Contacto Preferido */}
+        <fieldset className="space-y-4">
+          <legend className="flex items-center gap-2 mb-6">
+            <Zap className="h-5 w-5 text-rayo-yellow" />
+            <span className="font-display text-2xl text-white">
+              Contacto preferido
+            </span>
+          </legend>
+
+          <div className="flex items-start gap-3">
+            <input
+              type="checkbox"
+              id="wantContact"
+              name="wantContact"
+              checked={formData.wantContact}
+              onChange={handleChange}
+              className="w-5 h-5 mt-1 accent-rayo-yellow cursor-pointer border border-white/20 rounded"
+            />
+            <label htmlFor="wantContact" className="text-sm text-white">
+              <span className="font-semibold">¿Deseas que nos pongamos en contacto?</span>
+            </label>
+          </div>
+
+          {formData.wantContact && (
+            <div className="space-y-4 pl-8 border-l-2 border-rayo-yellow/30">
+              <p className="text-sm text-rayo-muted">
+                Selecciona cómo prefieres que te contactemos <span className="text-rayo-yellow">*</span>
+              </p>
+
+              <div className="space-y-2">
+                <label className="flex items-center gap-3 p-3 border border-white/10 rounded hover:border-rayo-yellow/50 transition-colors cursor-pointer">
+                  <input
+                    type="radio"
+                    name="contactMethod"
+                    value="whatsapp"
+                    checked={formData.contactMethod === 'whatsapp'}
+                    onChange={handleChange}
+                    className="w-4 h-4 accent-rayo-yellow cursor-pointer"
+                  />
+                  <span className="text-sm text-white font-semibold">WhatsApp</span>
+                </label>
+
+                <label className="flex items-center gap-3 p-3 border border-white/10 rounded hover:border-rayo-yellow/50 transition-colors cursor-pointer">
+                  <input
+                    type="radio"
+                    name="contactMethod"
+                    value="email"
+                    checked={formData.contactMethod === 'email'}
+                    onChange={handleChange}
+                    className="w-4 h-4 accent-rayo-yellow cursor-pointer"
+                  />
+                  <span className="text-sm text-white font-semibold">Correo electrónico</span>
+                </label>
+
+                <label className="flex items-center gap-3 p-3 border border-white/10 rounded hover:border-rayo-yellow/50 transition-colors cursor-pointer">
+                  <input
+                    type="radio"
+                    name="contactMethod"
+                    value="both"
+                    checked={formData.contactMethod === 'both'}
+                    onChange={handleChange}
+                    className="w-4 h-4 accent-rayo-yellow cursor-pointer"
+                  />
+                  <span className="text-sm text-white font-semibold">Ambos</span>
+                </label>
+              </div>
+
+              {errors.contactMethod && (
+                <p className="text-sm text-red-500">{errors.contactMethod}</p>
+              )}
+            </div>
+          )}
         </fieldset>
 
         {/* Confirmación */}

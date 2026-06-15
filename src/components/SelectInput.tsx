@@ -1,4 +1,3 @@
-import { useState, useRef, useEffect } from 'react'
 import { ChevronDown } from 'lucide-react'
 
 interface SelectInputProps {
@@ -22,44 +21,15 @@ export default function SelectInput({
   hasError = false,
   firstOptionEmpty = true,
 }: SelectInputProps) {
-  const [isOpen, setIsOpen] = useState(false)
-  const selectRef = useRef<HTMLSelectElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const handleClickOutside = (event: Event) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
-      }
-    }
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-      document.addEventListener('touchstart', handleClickOutside)
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-      document.removeEventListener('touchstart', handleClickOutside)
-    }
-  }, [isOpen])
-
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onChange(e)
-    setIsOpen(false)
-  }
-
   return (
-    <div ref={containerRef} className="relative">
+    <div className="relative">
       <select
-        ref={selectRef}
         id={id}
         name={name}
         value={value}
-        onChange={handleChange}
-        onFocus={() => setIsOpen(true)}
-        className={`w-full px-4 py-3 bg-rayo-panel border rounded text-white cursor-pointer appearance-none opacity-0 absolute inset-0 ${
-          hasError ? 'border-red-500/50' : 'border-white/10'
+        onChange={onChange}
+        className={`w-full px-4 py-3 pr-12 bg-rayo-panel border rounded text-white cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow appearance-none ${
+          hasError ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
         }`}
       >
         {firstOptionEmpty && <option value="">{placeholder}</option>}
@@ -70,16 +40,7 @@ export default function SelectInput({
         ))}
       </select>
 
-      <div
-        className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors flex items-center justify-between pointer-events-none ${
-          hasError ? 'border-red-500/50' : 'border-white/10'
-        }`}
-      >
-        <span className={value ? 'text-white' : 'text-white/40'}>
-          {value || placeholder}
-        </span>
-        <ChevronDown className={`h-5 w-5 text-rayo-yellow/50 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
-      </div>
+      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-rayo-yellow/50 pointer-events-none" />
     </div>
   )
 }
