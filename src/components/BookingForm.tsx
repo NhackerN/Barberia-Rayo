@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Mail, Phone, User, Zap } from 'lucide-react'
+import { Zap } from 'lucide-react'
 import SelectInput from './SelectInput'
 
 interface FormData {
@@ -181,20 +181,17 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
               <label htmlFor="fullName" className="block text-sm font-semibold text-white">
                 Nombre completo <span className="text-rayo-yellow">*</span>
               </label>
-              <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-rayo-yellow/50 pointer-events-none" />
-                <input
-                  type="text"
-                  id="fullName"
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  placeholder="Tu nombre"
-                  className={`w-full pl-12 pr-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
-                    errors.fullName ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
-                  }`}
-                />
-              </div>
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleChange}
+                placeholder="Tu nombre"
+                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
+                  errors.fullName ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
+                }`}
+              />
               {errors.fullName && (
                 <p className="text-sm text-red-500">{errors.fullName}</p>
               )}
@@ -204,20 +201,17 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
               <label htmlFor="phone" className="block text-sm font-semibold text-white">
                 Teléfono / WhatsApp <span className="text-rayo-yellow">*</span>
               </label>
-              <div className="relative">
-                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-rayo-yellow/50 pointer-events-none" />
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="+55 1234 5678"
-                  className={`w-full pl-12 pr-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
-                    errors.phone ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
-                  }`}
-                />
-              </div>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="+55 1234 5678"
+                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
+                  errors.phone ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
+                }`}
+              />
               {errors.phone && (
                 <p className="text-sm text-red-500">{errors.phone}</p>
               )}
@@ -228,20 +222,17 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
             <label htmlFor="email" className="block text-sm font-semibold text-white">
               Correo electrónico
             </label>
-            <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-rayo-yellow/50 pointer-events-none" />
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="tu@email.com"
-                className={`w-full pl-12 pr-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
-                  errors.email ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
-                }`}
-              />
-            </div>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="tu@email.com"
+              className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
+                errors.email ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
+              }`}
+            />
             {errors.email && (
               <p className="text-sm text-red-500">{errors.email}</p>
             )}
