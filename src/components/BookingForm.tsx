@@ -112,10 +112,11 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
       [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
     }))
 
-    if (errors[name]) {
+    if (errors[name] || errors.submit) {
       setErrors((prev) => ({
         ...prev,
         [name]: '',
+        submit: '',
       }))
     }
   }
@@ -133,14 +134,32 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
       ...formData,
     }
 
-    // TODO: Guardar bookingPayload en Supabase.
-    // TODO: Crear el evento correspondiente en Google Calendar.
-    void bookingPayload
+    try {
+      const response = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookingPayload),
+      })
+      const result = await response.json().catch(() => null)
 
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+      if (!response.ok) {
+        throw new Error(result?.message || 'No pudimos agendar la cita. Inténtalo de nuevo.')
+      }
 
-    setIsSubmitting(false)
-    onSubmit()
+      onSubmit()
+    } catch (error) {
+      setErrors((prev) => ({
+        ...prev,
+        submit:
+          error instanceof Error
+            ? error.message
+            : 'No pudimos agendar la cita. Inténtalo de nuevo.',
+      }))
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -468,6 +487,10 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
         </fieldset>
 
         {/* Submit Button */}
+        {errors.submit && (
+          <p className="text-sm text-red-500">{errors.submit}</p>
+        )}
+
         <button
           type="submit"
           disabled={isSubmitting}

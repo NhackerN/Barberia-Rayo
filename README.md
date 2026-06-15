@@ -71,3 +71,23 @@ export default defineConfig([
   },
 ])
 ```
+
+## Agendado: Supabase + Google Calendar
+
+El formulario de `/agendar` envía los datos a `POST /api/bookings`.
+Esa función serverless guarda la solicitud en Supabase y después crea un evento en Google Calendar.
+
+1. Crea la tabla ejecutando `supabase/bookings.sql` en el SQL editor de Supabase.
+2. Copia `.env.example` a `.env.local` para desarrollo local o configura esas mismas variables en Vercel.
+3. Usa `SUPABASE_SERVICE_ROLE_KEY` solo como variable serverless. No la expongas con prefijo `VITE_`.
+4. En Google Cloud, crea una cuenta de servicio y una llave JSON.
+5. Comparte el calendario destino con el email de la cuenta de servicio con permiso para modificar eventos.
+6. Configura `GOOGLE_CALENDAR_ID`, `GOOGLE_SERVICE_ACCOUNT_EMAIL` y `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY`.
+
+Para probar el endpoint `/api/bookings` localmente usa `vercel dev`; `npm run dev` solo levanta Vite.
+
+La llave privada debe conservar los saltos de línea escapados:
+
+```env
+GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+```
