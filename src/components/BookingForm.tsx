@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Mail, Phone, User, Zap } from 'lucide-react'
+import SelectInput from './SelectInput'
 
 interface FormData {
   fullName: string
@@ -252,22 +253,16 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
             <label htmlFor="service" className="block text-sm font-semibold text-white">
               ¿Qué servicio deseas? <span className="text-rayo-yellow">*</span>
             </label>
-            <select
+            <SelectInput
               id="service"
               name="service"
               value={formData.service}
               onChange={handleChange}
-              className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white cursor-pointer ${
-                errors.service ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
-              }`}
-            >
-              <option value="">Selecciona un servicio</option>
-              {SERVICES.map((service) => (
-                <option key={service} value={service}>
-                  {service}
-                </option>
-              ))}
-            </select>
+              options={SERVICES}
+              placeholder="Selecciona un servicio"
+              hasError={!!errors.service}
+              firstOptionEmpty
+            />
             {errors.service && (
               <p className="text-sm text-red-500">{errors.service}</p>
             )}
@@ -288,19 +283,15 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
               <label htmlFor="barber" className="block text-sm font-semibold text-white">
                 Barbero preferido
               </label>
-              <select
+              <SelectInput
                 id="barber"
                 name="barber"
                 value={formData.barber}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-rayo-panel border border-white/10 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white hover:border-white/20 cursor-pointer"
-              >
-                {BARBERS.map((barber) => (
-                  <option key={barber} value={barber}>
-                    {barber}
-                  </option>
-                ))}
-              </select>
+                options={BARBERS}
+                placeholder="Sin preferencia"
+                firstOptionEmpty={false}
+              />
             </div>
 
             <div className="space-y-2">
