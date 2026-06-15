@@ -1,5 +1,5 @@
-import { Clock, MapPin, Navigation, Send } from 'lucide-react'
-import { HOURS, MAPS_URL, WHATSAPP_URL } from '../constants'
+import { Clock, Navigation, Send } from 'lucide-react'
+import { HOURS, MAPS_EMBED_URL, MAPS_URL, WHATSAPP_URL } from '../constants'
 
 export function Location() {
   return (
@@ -10,8 +10,7 @@ export function Location() {
             <span className="section-kicker">Ubicación</span>
             <h2 className="display-title mt-4">ESTAMOS EN CHIMALHUACÁN</h2>
             <p className="mt-6 max-w-xl text-lg leading-8 text-rayo-muted">
-              Agenda tu visita y llega directo. La ubicación exacta puede
-              actualizarse desde la constante MAPS_URL.
+              Agenda tu visita y usa el mapa interactivo para llegar directo.
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <a
@@ -36,20 +35,22 @@ export function Location() {
           </div>
 
           <div className="grid gap-4 md:grid-cols-[1.2fr_0.8fr]">
-            <div className="map-panel relative min-h-80 overflow-hidden border border-white/10 bg-rayo-panel p-6">
-              <div className="absolute inset-0 opacity-50 [background-image:linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:38px_38px]" />
-              <div className="absolute left-10 top-16 h-48 w-56 rotate-12 border-l-4 border-t-4 border-rayo-yellow" />
-              <div className="absolute bottom-12 right-12 h-36 w-44 -rotate-12 border-b-4 border-r-4 border-rayo-yellow/80" />
-              <div className="absolute left-1/2 top-1/2 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center bg-rayo-yellow text-black shadow-[0_0_40px_rgba(255,210,31,0.45)]">
-                <MapPin className="h-8 w-8 fill-current" />
-              </div>
-              <div className="relative z-10 flex h-full flex-col justify-between">
-                <p className="font-display text-4xl text-white">
+            <div className="relative min-h-80 overflow-hidden border border-white/10 bg-rayo-panel">
+              <iframe
+                title="Mapa interactivo de Barbería Rayo en Chimalhuacán"
+                src={MAPS_EMBED_URL}
+                className="absolute inset-0 h-full w-full bg-white grayscale brightness-[0.78] contrast-[1.12]"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+              <div className="pointer-events-none absolute inset-0 border border-rayo-yellow/20 shadow-[inset_0_0_80px_rgba(0,0,0,0.35)]" />
+              <div className="pointer-events-none absolute left-4 top-4 bg-black/80 px-4 py-3 backdrop-blur-sm">
+                <p className="font-display text-3xl text-white">
                   CHIMALHUACÁN
                 </p>
-                <p className="max-w-xs text-sm leading-6 text-rayo-muted">
-                  Mapa editable con acceso directo a Google Maps para llegar
-                  sin vueltas.
+                <p className="text-xs font-bold uppercase text-rayo-yellow">
+                  Google Maps
                 </p>
               </div>
             </div>

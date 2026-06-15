@@ -4,6 +4,9 @@ export const WHATSAPP_URL =
 export const MAPS_URL =
   'https://www.google.com/maps/search/?api=1&query=Barber%C3%ADa%20Rayo%20Chimalhuac%C3%A1n'
 
+export const MAPS_EMBED_URL =
+  'https://www.google.com/maps?q=Barber%C3%ADa%20Rayo%20Chimalhuac%C3%A1n&z=16&output=embed'
+
 export const NAV_LINKS = [
   { label: 'Inicio', href: '#inicio' },
   { label: 'Servicios', href: '#servicios' },
