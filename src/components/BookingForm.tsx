@@ -21,6 +21,10 @@ interface FormErrors {
   [key: string]: string
 }
 
+type BookingPayload = FormData & {
+  bookingId: string
+}
+
 const SERVICES = [
   'Corte clásico',
   'Corte moderno',
@@ -41,6 +45,8 @@ const BARBERS = [
 interface BookingFormProps {
   onSubmit: () => void
 }
+
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit'
 
 export default function BookingForm({ onSubmit }: BookingFormProps) {
   const [formData, setFormData] = useState<FormData>({
@@ -130,24 +136,16 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
 
     setIsSubmitting(true)
 
-    const bookingPayload = {
+    const bookingPayload: BookingPayload = {
       ...formData,
+      bookingId: createBookingId(),
     }
 
     try {
-      const response = await fetch('/api/bookings', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(bookingPayload),
+      await sendWeb3FormsNotification(bookingPayload)
+      await syncGoogleCalendar(bookingPayload).catch((error) => {
+        console.warn('Google Calendar sync failed:', error)
       })
-      const result = await response.json().catch(() => null)
-
-      if (!response.ok) {
-        throw new Error(result?.message || 'No pudimos agendar la cita. Inténtalo de nuevo.')
-      }
-
       onSubmit()
     } catch (error) {
       setErrors((prev) => ({
@@ -502,4 +500,90 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
       </div>
     </form>
   )
+}
+
+function createBookingId() {
+  return globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`
+}
+
+async function sendWeb3FormsNotification(bookingPayload: BookingPayload) {
+  const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as string | undefined
+
+  if (!accessKey) {
+    throw new Error('Falta configurar Web3Forms para recibir la cita.')
+  }
+
+  const response = await fetch(WEB3FORMS_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      access_key: accessKey,
+      subject: `Nueva cita Barbería Rayo - ${bookingPayload.service}`,
+      from_name: 'Barbería Rayo',
+      form_name: 'Barbería Rayo - Citas',
+      name: bookingPayload.fullName,
+      email: bookingPayload.email || 'sin-correo@barberia-rayo.local',
+      phone: bookingPayload.phone,
+      booking_id: bookingPayload.bookingId,
+      servicio: bookingPayload.service,
+      barbero: bookingPayload.barber,
+      fecha: bookingPayload.date,
+      hora: bookingPayload.time,
+      contacto_preferido: bookingPayload.wantContact
+        ? bookingPayload.contactMethod
+        : 'No solicitado',
+      descripcion: bookingPayload.description || 'Sin descripción',
+      comentarios: bookingPayload.comments || 'Sin comentarios',
+      message: buildWeb3FormsMessage(bookingPayload),
+      botcheck: false,
+    }),
+  })
+  const result = await response.json().catch(() => null)
+
+  if (!response.ok || result?.success === false) {
+    throw new Error(
+      result?.message ||
+        'No pudimos enviar tu cita por Web3Forms. Inténtalo de nuevo.'
+    )
+  }
+}
+
+async function syncGoogleCalendar(bookingPayload: BookingPayload) {
+  const response = await fetch('/api/bookings', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(bookingPayload),
+  })
+  const result = await response.json().catch(() => null)
+
+  if (!response.ok) {
+    throw new Error(result?.message || 'No pudimos crear el evento en Google Calendar.')
+  }
+}
+
+function buildWeb3FormsMessage(bookingPayload: BookingPayload) {
+  return [
+    'Nueva cita registrada en Barbería Rayo.',
+    '',
+    `ID: ${bookingPayload.bookingId}`,
+    `Cliente: ${bookingPayload.fullName}`,
+    `Teléfono / WhatsApp: ${bookingPayload.phone}`,
+    bookingPayload.email ? `Correo: ${bookingPayload.email}` : null,
+    `Servicio: ${bookingPayload.service}`,
+    `Barbero: ${bookingPayload.barber}`,
+    `Fecha: ${bookingPayload.date}`,
+    `Hora: ${bookingPayload.time}`,
+    bookingPayload.description ? `Descripción: ${bookingPayload.description}` : null,
+    bookingPayload.comments ? `Comentarios: ${bookingPayload.comments}` : null,
+    bookingPayload.wantContact
+      ? `Contacto preferido: ${bookingPayload.contactMethod}`
+      : null,
+  ]
+    .filter(Boolean)
+    .join('\n')
 }

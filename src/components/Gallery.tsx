@@ -8,10 +8,6 @@ export function Gallery() {
         <div className="section-heading">
           <span className="section-kicker">Galería</span>
           <h2 className="display-title">CORTES, DETALLES Y ESTILO RAYO</h2>
-          <p>
-            Espacios listos para colocar fotos reales de cortes, barba y
-            resultados dentro de la barbería.
-          </p>
         </div>
 
         <div className="mt-12 grid auto-rows-[220px] gap-4 md:grid-cols-3">

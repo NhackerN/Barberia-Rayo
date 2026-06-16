@@ -1,7 +1,7 @@
 import { ArrowRight, Zap } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import heroImage from '../assets/barberia-rayo-hero.png'
-import { HERO_STATS } from '../constants'
+import { BOOKING_FORM_PATH, HERO_STATS } from '../constants'
 import { LogoMark } from './LogoMark'
 
 export function Hero() {
@@ -52,7 +52,7 @@ export function Hero() {
 
           <div className="mt-7 flex flex-col gap-4 sm:flex-row">
             <Link
-              to="/agendar"
+              to={BOOKING_FORM_PATH}
               className="premium-button justify-center px-7 py-4 text-base"
             >
               Agendar cita

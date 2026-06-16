@@ -1,5 +1,12 @@
 import { Clock, Navigation, Send } from 'lucide-react'
-import { HOURS, MAPS_EMBED_URL, MAPS_URL, WHATSAPP_URL } from '../constants'
+import { Link } from 'react-router-dom'
+import {
+  BOOKING_FORM_PATH,
+  HOURS,
+  MAPS_EMBED_URL,
+  MAPS_URL,
+  WHATSAPP_URL,
+} from '../constants'
 
 export function Location() {
   return (
@@ -90,14 +97,12 @@ export function Location() {
               precisión y actitud.
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noreferrer"
+              <Link
+                to={BOOKING_FORM_PATH}
                 className="premium-button justify-center px-8 py-5 text-base"
               >
-                Agendar por WhatsApp
-              </a>
+                Agendar cita
+              </Link>
               <a
                 href={MAPS_URL}
                 target="_blank"

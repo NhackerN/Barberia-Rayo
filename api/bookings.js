@@ -1,9 +1,10 @@
-import { createSign } from 'node:crypto'
+import { createSign, randomUUID } from 'node:crypto'
 
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token'
 const GOOGLE_CALENDAR_SCOPE = 'https://www.googleapis.com/auth/calendar.events'
 const DEFAULT_TIMEZONE = 'America/Mexico_City'
 const DEFAULT_DURATION_MINUTES = 60
+const DEFAULT_REMINDER_MINUTES = 30
 
 class PublicError extends Error {
   constructor(message, statusCode = 500) {
@@ -27,44 +28,31 @@ export default async function handler(req, res) {
       return sendError(
         res,
         500,
-        'Falta configurar Supabase o Google Calendar en las variables de entorno.',
+        'Falta configurar Google Calendar en las variables de entorno.',
         { missingConfig }
       )
     }
 
     const payload = normalizePayload(await readJsonBody(req))
-    const booking = await insertBooking(payload)
 
     let calendarEvent
 
     try {
-      calendarEvent = await createCalendarEvent(payload, booking.id)
-      await updateBooking(booking.id, {
-        status: 'calendar_created',
-        calendar_event_id: calendarEvent.id,
-        calendar_event_link: calendarEvent.htmlLink ?? null,
-        calendar_error: null,
-      })
+      calendarEvent = await createCalendarEvent(payload)
     } catch (error) {
-      await updateBooking(booking.id, {
-        status: 'calendar_failed',
-        calendar_error: getErrorMessage(error),
-      }).catch((updateError) => {
-        console.error('Failed to update booking after calendar error:', updateError)
-      })
-
       console.error('Calendar sync failed:', error)
       throw new PublicError(
-        'Tu solicitud se guardó, pero no pudimos crear el evento en Google Calendar. Revisa la configuración del calendario.',
+        'Tu solicitud fue enviada, pero no pudimos crear el evento en Google Calendar. Revisa la configuración del calendario.',
         502
       )
     }
 
     return res.status(201).json({
       ok: true,
-      bookingId: booking.id,
+      bookingId: payload.bookingId,
       calendarEventId: calendarEvent.id,
       calendarEventLink: calendarEvent.htmlLink ?? null,
+      calendarWarning: calendarEvent.notificationWarning ?? null,
     })
   } catch (error) {
     console.error('Booking request failed:', error)
@@ -111,6 +99,7 @@ function normalizePayload(body) {
     acceptTerms: Boolean(source.acceptTerms),
     wantContact: Boolean(source.wantContact),
     contactMethod: cleanString(source.contactMethod),
+    bookingId: cleanString(source.bookingId) || randomUUID(),
   }
 
   const errors = []
@@ -131,67 +120,14 @@ function normalizePayload(body) {
   return payload
 }
 
-async function insertBooking(payload) {
-  const row = {
-    full_name: payload.fullName,
-    phone: payload.phone,
-    email: payload.email || null,
-    service: payload.service,
-    barber: payload.barber,
-    appointment_date: payload.date,
-    appointment_time: payload.time,
-    description: payload.description || null,
-    comments: payload.comments || null,
-    accept_terms: payload.acceptTerms,
-    wants_contact: payload.wantContact,
-    contact_method: payload.contactMethod || null,
-    status: 'received',
-  }
-
-  const response = await fetch(`${getSupabaseRestUrl()}/${getSupabaseTable()}`, {
-    method: 'POST',
-    headers: getSupabaseHeaders('return=representation'),
-    body: JSON.stringify(row),
-  })
-  const data = await readApiResponse(response)
-
-  if (!response.ok) {
-    console.error('Supabase insert failed:', data)
-    throw new PublicError('No pudimos guardar tu cita en Supabase.', 502)
-  }
-
-  const booking = Array.isArray(data) ? data[0] : data
-
-  if (!booking?.id) {
-    throw new PublicError('La cita se guardó sin un ID válido.', 502)
-  }
-
-  return booking
-}
-
-async function updateBooking(id, fields) {
-  const response = await fetch(
-    `${getSupabaseRestUrl()}/${getSupabaseTable()}?id=eq.${encodeURIComponent(id)}`,
-    {
-      method: 'PATCH',
-      headers: getSupabaseHeaders('return=minimal'),
-      body: JSON.stringify(fields),
-    }
-  )
-
-  if (!response.ok) {
-    const data = await readApiResponse(response)
-    throw new Error(`Supabase update failed: ${JSON.stringify(data)}`)
-  }
-}
-
-async function createCalendarEvent(payload, bookingId) {
+async function createCalendarEvent(payload) {
   const accessToken = await getGoogleAccessToken()
   const timeZone = process.env.BOOKING_TIMEZONE || DEFAULT_TIMEZONE
   const configuredDuration = Number(process.env.BOOKING_DURATION_MINUTES || DEFAULT_DURATION_MINUTES)
   const duration = Number.isFinite(configuredDuration)
     ? configuredDuration
     : DEFAULT_DURATION_MINUTES
+  const attendees = getCalendarAttendees(payload)
   const startDateTime = `${payload.date}T${payload.time}:00`
   const endDateTime = addMinutesToLocalDateTime(payload.date, payload.time, duration)
   const calendarId = encodeURIComponent(process.env.GOOGLE_CALENDAR_ID)
@@ -208,14 +144,54 @@ async function createCalendarEvent(payload, bookingId) {
     },
     extendedProperties: {
       private: {
-        bookingId,
+        bookingId: payload.bookingId,
         source: 'barberia-rayo-web',
       },
     },
+    reminders: {
+      useDefault: false,
+      overrides: getReminderOverrides(),
+    },
+    guestsCanInviteOthers: false,
+    guestsCanModify: false,
+    guestsCanSeeOtherGuests: false,
   }
 
+  if (attendees.length > 0) {
+    event.attendees = attendees
+  }
+
+  const data = await insertCalendarEvent(calendarId, event, accessToken, attendees.length > 0)
+
+  if (data?.error?.reason === 'forbiddenForServiceAccounts') {
+    const fallbackEvent = { ...event }
+    delete fallbackEvent.attendees
+
+    const fallbackData = await insertCalendarEvent(calendarId, fallbackEvent, accessToken, false)
+
+    if (fallbackData?.error) {
+      throw new Error(`Google Calendar insert failed: ${JSON.stringify(fallbackData)}`)
+    }
+
+    return {
+      ...fallbackData,
+      notificationWarning:
+        'Google Calendar no permitió enviar invitaciones desde una service account.',
+    }
+  }
+
+  if (data?.error) {
+    throw new Error(`Google Calendar insert failed: ${JSON.stringify(data)}`)
+  }
+
+  return data
+}
+
+async function insertCalendarEvent(calendarId, event, accessToken, shouldSendUpdates) {
   const response = await fetch(
-    `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?sendUpdates=none`,
+    `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?sendUpdates=${
+      shouldSendUpdates ? 'all' : 'none'
+    }`,
     {
       method: 'POST',
       headers: {
@@ -228,7 +204,12 @@ async function createCalendarEvent(payload, bookingId) {
   const data = await readApiResponse(response)
 
   if (!response.ok) {
-    throw new Error(`Google Calendar insert failed: ${JSON.stringify(data)}`)
+    return {
+      error: {
+        reason: data?.error?.errors?.[0]?.reason,
+        data,
+      },
+    }
   }
 
   return data
@@ -277,33 +258,8 @@ function createServiceAccountJwt() {
   return `${unsignedToken}.${base64UrlEncode(signature)}`
 }
 
-function getSupabaseRestUrl() {
-  return `${process.env.SUPABASE_URL.replace(/\/$/, '')}/rest/v1`
-}
-
-function getSupabaseTable() {
-  const table = process.env.SUPABASE_BOOKINGS_TABLE || 'bookings'
-
-  if (!/^[a-zA-Z0-9_]+$/.test(table)) {
-    throw new PublicError('El nombre de la tabla de Supabase no es válido.', 500)
-  }
-
-  return table
-}
-
-function getSupabaseHeaders(prefer) {
-  return {
-    apikey: process.env.SUPABASE_SERVICE_ROLE_KEY,
-    Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
-    'Content-Type': 'application/json',
-    Prefer: prefer,
-  }
-}
-
 function getMissingConfig() {
   return [
-    'SUPABASE_URL',
-    'SUPABASE_SERVICE_ROLE_KEY',
     'GOOGLE_CALENDAR_ID',
     'GOOGLE_SERVICE_ACCOUNT_EMAIL',
     'GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY',
@@ -326,6 +282,7 @@ async function readApiResponse(response) {
 
 function buildCalendarDescription(payload) {
   return [
+    `ID: ${payload.bookingId}`,
     `Cliente: ${payload.fullName}`,
     `Teléfono / WhatsApp: ${payload.phone}`,
     payload.email ? `Correo: ${payload.email}` : null,
@@ -337,6 +294,39 @@ function buildCalendarDescription(payload) {
   ]
     .filter(Boolean)
     .join('\n')
+}
+
+function getCalendarAttendees(payload) {
+  const notifyCustomer = process.env.BOOKING_NOTIFY_CUSTOMER_EMAIL !== 'false'
+  const emails = [
+    ...splitEmails(process.env.BOOKING_NOTIFICATION_EMAILS),
+    notifyCustomer && payload.email ? payload.email : null,
+  ].filter(Boolean)
+  const uniqueEmails = [...new Set(emails.map((email) => email.toLowerCase()))]
+
+  return uniqueEmails.map((email) => ({ email }))
+}
+
+function getReminderOverrides() {
+  const minutes = Number(process.env.BOOKING_REMINDER_MINUTES || DEFAULT_REMINDER_MINUTES)
+  const reminderMinutes = Number.isFinite(minutes) ? minutes : DEFAULT_REMINDER_MINUTES
+  const methods = splitList(process.env.BOOKING_REMINDER_METHODS || 'popup,email')
+
+  return methods.map((method) => ({
+    method,
+    minutes: reminderMinutes,
+  }))
+}
+
+function splitEmails(value = '') {
+  return splitList(value).filter(isEmail)
+}
+
+function splitList(value = '') {
+  return value
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean)
 }
 
 function addMinutesToLocalDateTime(date, time, minutesToAdd) {
@@ -382,10 +372,6 @@ function base64UrlEncode(value) {
     .replace(/=/g, '')
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
-}
-
-function getErrorMessage(error) {
-  return error instanceof Error ? error.message : String(error)
 }
 
 function sendError(res, statusCode, message, extra = {}) {

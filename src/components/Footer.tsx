@@ -1,4 +1,5 @@
-import { NAV_LINKS, WHATSAPP_URL } from '../constants'
+import { Link } from 'react-router-dom'
+import { BOOKING_FORM_PATH, NAV_LINKS } from '../constants'
 import { LogoMark } from './LogoMark'
 
 export function Footer() {
@@ -6,7 +7,7 @@ export function Footer() {
     <footer className="border-t border-white/10 bg-black py-10">
       <div className="section-shell">
         <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-          <a href="#inicio" className="flex items-center gap-3">
+          <Link to="/#inicio" className="flex items-center gap-3">
             <LogoMark className="h-12 w-12" />
             <span className="leading-none">
               <span className="block font-display text-3xl text-white">
@@ -16,26 +17,24 @@ export function Footer() {
                 CHIMALHUACÁN
               </span>
             </span>
-          </a>
+          </Link>
 
           <div className="flex flex-wrap gap-x-5 gap-y-3">
             {NAV_LINKS.map((link) => (
-              <a
+              <Link
                 key={link.href}
-                href={link.href}
+                to={`/${link.href}`}
                 className="text-sm font-semibold text-rayo-muted transition-colors hover:text-rayo-yellow"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              to={BOOKING_FORM_PATH}
               className="text-sm font-semibold text-rayo-yellow"
             >
               Agendar
-            </a>
+            </Link>
           </div>
         </div>
 

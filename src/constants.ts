@@ -1,6 +1,8 @@
 export const WHATSAPP_URL =
   'https://wa.me/525512345678?text=Hola%20Barber%C3%ADa%20Rayo%2C%20quiero%20agendar%20mi%20corte'
 
+export const BOOKING_FORM_PATH = '/agendar#formulario'
+
 export const MAPS_URL =
   'https://www.google.com/maps/search/?api=1&query=Barber%C3%ADa%20Rayo%20Chimalhuac%C3%A1n'
 
@@ -74,7 +76,7 @@ export const EXPERIENCE_POINTS = [
   'Atención personalizada',
   'Estilo moderno',
   'Ambiente urbano premium',
-  'Agenda rápida por WhatsApp',
+  'Agenda rápida con formulario',
 ] as const
 
 export const GALLERY_ITEMS = [
@@ -88,5 +90,5 @@ export const GALLERY_ITEMS = [
 
 export const HOURS = [
   { day: 'Lunes a domingo', time: '10:00 AM - 9:00 PM' },
-  { day: 'Horarios editables', time: 'Agenda por WhatsApp' },
+  { day: 'Horarios editables', time: 'Agenda con formulario' },
 ] as const

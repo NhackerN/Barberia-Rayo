@@ -1,7 +1,7 @@
 import { Menu, X } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { NAV_LINKS } from '../constants'
+import { BOOKING_FORM_PATH, NAV_LINKS } from '../constants'
 import { LogoMark } from './LogoMark'
 
 export function Navbar() {
@@ -31,20 +31,20 @@ export function Navbar() {
 
         <div className="hidden items-center gap-7 lg:flex">
           {NAV_LINKS.map((link) => (
-            <a
+            <Link
               key={link.href}
-              href={link.href}
+              to={`/${link.href}`}
               className="group relative text-sm font-semibold text-white/82 transition-colors duration-300 hover:text-rayo-yellow"
             >
               {link.label}
               <span className="absolute -bottom-2 left-0 h-0.5 w-0 bg-rayo-yellow transition-all duration-300 group-hover:w-full" />
-            </a>
+            </Link>
           ))}
         </div>
 
         <div className="hidden items-center gap-3 lg:flex">
           <Link
-            to="/agendar"
+            to={BOOKING_FORM_PATH}
             className="premium-button px-8 py-4 text-sm"
           >
             Agendar
@@ -71,17 +71,17 @@ export function Navbar() {
       >
         <div className="grid gap-2">
           {NAV_LINKS.map((link) => (
-            <a
+            <Link
               key={link.href}
-              href={link.href}
+              to={`/${link.href}`}
               onClick={closeMenu}
               className="border border-transparent px-3 py-3 font-semibold text-white/85 transition-colors hover:border-rayo-yellow/40 hover:text-rayo-yellow"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
           <Link
-            to="/agendar"
+            to={BOOKING_FORM_PATH}
             className="premium-button mt-2 justify-center px-5 py-4"
             onClick={closeMenu}
           >

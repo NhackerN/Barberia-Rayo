@@ -34,6 +34,11 @@
     text-decoration: none;
   }
 
+  section[id],
+  #contacto {
+    scroll-margin-top: 7rem;
+  }
+
   ::selection {
     background: #ffd21f;
     color: #050505;

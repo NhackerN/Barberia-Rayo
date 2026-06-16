@@ -1,5 +1,6 @@
-import { Check, MessageCircle, ShieldCheck, Sparkles, Zap } from 'lucide-react'
-import { EXPERIENCE_POINTS, WHATSAPP_URL } from '../constants'
+import { CalendarCheck, Check, ShieldCheck, Sparkles, Zap } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { BOOKING_FORM_PATH, EXPERIENCE_POINTS } from '../constants'
 
 export function Experience() {
   return (
@@ -13,15 +14,13 @@ export function Experience() {
             estructura, detalle y presencia. Aquí cada línea tiene intención y
             cada acabado se revisa antes de salir.
           </p>
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noreferrer"
+          <Link
+            to={BOOKING_FORM_PATH}
             className="outline-button mt-8 px-6 py-4"
           >
-            <MessageCircle className="h-5 w-5" />
-            Agenda rápida por WhatsApp
-          </a>
+            <CalendarCheck className="h-5 w-5" />
+            Agendar cita
+          </Link>
         </div>
 
         <div className="relative">
