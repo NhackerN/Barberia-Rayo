@@ -25,7 +25,9 @@
     margin: 0;
     overflow-x: hidden;
     background:
-      radial-gradient(circle at 18% 10%, rgba(255, 210, 31, 0.08), transparent 28%),
+      linear-gradient(180deg, rgba(124, 58, 237, 0.07), transparent 22rem),
+      radial-gradient(ellipse at 82% 8%, rgba(91, 33, 182, 0.22), transparent 32rem),
+      radial-gradient(ellipse at 12% 0%, rgba(250, 204, 21, 0.08), transparent 26rem),
       #050505;
   }
 
@@ -40,7 +42,7 @@
   }
 
   ::selection {
-    background: #ffd21f;
+    background: #facc15;
     color: #050505;
   }
 }
@@ -51,7 +53,7 @@
   }
 
   .section-band {
-    @apply border-y border-white/10 bg-[#080808] py-24 sm:py-32;
+    @apply border-y border-rayo-purple/20 bg-rayo-surface py-24 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),inset_0_-1px_0_rgba(124,58,237,0.12)] sm:py-32;
   }
 
   .section-heading {
@@ -63,7 +65,7 @@
   }
 
   .section-kicker {
-    @apply inline-flex border border-rayo-yellow/50 bg-rayo-yellow/10 px-4 py-2 text-sm font-extrabold uppercase text-rayo-yellow;
+    @apply inline-flex border border-rayo-purple/40 bg-rayo-purple/10 px-4 py-2 text-sm font-extrabold uppercase text-rayo-yellow shadow-[0_0_24px_rgba(124,58,237,0.14)];
   }
 
   .display-title {
@@ -71,11 +73,11 @@
   }
 
   .premium-button {
-    @apply inline-flex items-center gap-3 bg-rayo-yellow font-extrabold text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-rayo-amber hover:shadow-[0_0_34px_rgba(255,210,31,0.34)] focus:outline-none focus:ring-2 focus:ring-rayo-yellow focus:ring-offset-2 focus:ring-offset-black;
+    @apply inline-flex items-center gap-3 border border-rayo-yellow/80 bg-rayo-yellow font-extrabold text-black shadow-[0_0_30px_rgba(124,58,237,0.22),0_12px_30px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.01] hover:border-rayo-purple hover:bg-[linear-gradient(135deg,#FACC15_0%,#FACC15_42%,#7C3AED_100%)] hover:text-white hover:shadow-[0_0_34px_rgba(124,58,237,0.38)] focus:outline-none focus:ring-2 focus:ring-rayo-yellow focus:ring-offset-2 focus:ring-offset-black;
   }
 
   .outline-button {
-    @apply inline-flex items-center gap-3 border border-rayo-yellow bg-black/40 font-extrabold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-rayo-yellow hover:text-black focus:outline-none focus:ring-2 focus:ring-rayo-yellow focus:ring-offset-2 focus:ring-offset-black;
+    @apply inline-flex items-center gap-3 border border-rayo-purple/80 bg-black/40 font-extrabold text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.03)] transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.01] hover:border-rayo-purple hover:bg-rayo-purple hover:text-white hover:shadow-[0_0_30px_rgba(124,58,237,0.32)] focus:outline-none focus:ring-2 focus:ring-rayo-yellow focus:ring-offset-2 focus:ring-offset-black;
   }
 
   input,
@@ -111,23 +113,84 @@
 
 @layer utilities {
   .hero-image {
-    filter: saturate(0.75) contrast(1.12);
+    filter: saturate(0.82) contrast(1.18) brightness(0.72);
+    transform: scale(1.02);
   }
 
   .gallery-tile::before {
     content: '';
     position: absolute;
     inset: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(124, 58, 237, 0.18);
     transform: skew(-8deg);
+    transition: border-color 300ms ease, box-shadow 300ms ease;
+  }
+
+  .gallery-tile:hover::before {
+    border-color: rgba(250, 204, 21, 0.48);
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.2);
   }
 
   .map-panel::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, transparent 45%, rgba(255, 210, 31, 0.12));
+    background: linear-gradient(135deg, transparent 45%, rgba(124, 58, 237, 0.18));
     pointer-events: none;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 620ms ease both;
+  }
+
+  .animate-slide-up {
+    animation: slide-up 680ms ease both;
+  }
+
+  .animate-glow-pulse {
+    animation: glow-pulse 3.8s ease-in-out infinite;
+  }
+
+  .hover-scale {
+    transition-duration: 300ms;
+    transition-property: transform, border-color, box-shadow, background-color, color;
+  }
+
+  .hover-scale:hover {
+    transform: translateY(-0.25rem) scale(1.01);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 22px rgba(124, 58, 237, 0.18);
+  }
+
+  50% {
+    box-shadow: 0 0 34px rgba(124, 58, 237, 0.3);
   }
 }
 

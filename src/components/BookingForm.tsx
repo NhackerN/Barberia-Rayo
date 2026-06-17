@@ -189,8 +189,8 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
                 onChange={handleChange}
                 placeholder="Tu nombre"
                 autoComplete="name"
-                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
-                  errors.fullName ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
+                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-rayo-yellow focus:shadow-[0_0_20px_rgba(250,204,21,0.18)] text-white placeholder-white/40 ${
+                  errors.fullName ? 'border-red-500/50 focus:ring-red-500' : 'border-rayo-purple/30 hover:border-rayo-purple/60 focus:border-rayo-yellow/80'
                 }`}
                 style={{ touchAction: 'manipulation', minHeight: '48px', fontSize: '16px' }}
               />
@@ -211,8 +211,8 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
                 onChange={handleChange}
                 placeholder="+55 1234 5678"
                 autoComplete="tel"
-                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
-                  errors.phone ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
+                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-rayo-yellow focus:shadow-[0_0_20px_rgba(250,204,21,0.18)] text-white placeholder-white/40 ${
+                  errors.phone ? 'border-red-500/50 focus:ring-red-500' : 'border-rayo-purple/30 hover:border-rayo-purple/60 focus:border-rayo-yellow/80'
                 }`}
                 style={{ touchAction: 'manipulation', minHeight: '48px', fontSize: '16px' }}
               />
@@ -234,8 +234,8 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
               onChange={handleChange}
               placeholder="tu@email.com"
               autoComplete="email"
-              className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 ${
-                errors.email ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
+              className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-rayo-yellow focus:shadow-[0_0_20px_rgba(250,204,21,0.18)] text-white placeholder-white/40 ${
+                errors.email ? 'border-red-500/50 focus:ring-red-500' : 'border-rayo-purple/30 hover:border-rayo-purple/60 focus:border-rayo-yellow/80'
               }`}
               style={{ touchAction: 'manipulation', minHeight: '48px', fontSize: '16px' }}
             />
@@ -309,8 +309,8 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
                 name="date"
                 value={formData.date}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white ${
-                  errors.date ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
+                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-rayo-yellow focus:shadow-[0_0_20px_rgba(250,204,21,0.18)] text-white ${
+                  errors.date ? 'border-red-500/50 focus:ring-red-500' : 'border-rayo-purple/30 hover:border-rayo-purple/60 focus:border-rayo-yellow/80'
                 }`}
                 style={{ touchAction: 'manipulation', minHeight: '48px', fontSize: '16px' }}
               />
@@ -329,8 +329,8 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
                 name="time"
                 value={formData.time}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white ${
-                  errors.time ? 'border-red-500/50 focus:ring-red-500' : 'border-white/10 hover:border-white/20'
+                className={`w-full px-4 py-3 bg-rayo-panel border rounded transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-rayo-yellow focus:shadow-[0_0_20px_rgba(250,204,21,0.18)] text-white ${
+                  errors.time ? 'border-red-500/50 focus:ring-red-500' : 'border-rayo-purple/30 hover:border-rayo-purple/60 focus:border-rayo-yellow/80'
                 }`}
                 style={{ touchAction: 'manipulation', minHeight: '48px', fontSize: '16px' }}
               />
@@ -361,7 +361,7 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
               onChange={handleChange}
               placeholder="Describa el estilo, largo, detalles que desea..."
               rows={3}
-              className="w-full px-4 py-3 bg-rayo-panel border border-white/10 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 hover:border-white/20 resize-none"
+              className="w-full px-4 py-3 bg-rayo-panel border border-rayo-purple/30 rounded transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-rayo-yellow focus:border-rayo-yellow/80 focus:shadow-[0_0_20px_rgba(250,204,21,0.18)] text-white placeholder-white/40 hover:border-rayo-purple/60 resize-none"
               style={{ touchAction: 'manipulation', minHeight: '120px', fontSize: '16px' }}
             />
           </div>
@@ -377,7 +377,7 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
               onChange={handleChange}
               placeholder="Comparte referencias, fotos o cualquier comentario adicional..."
               rows={3}
-              className="w-full px-4 py-3 bg-rayo-panel border border-white/10 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-rayo-yellow text-white placeholder-white/40 hover:border-white/20 resize-none"
+              className="w-full px-4 py-3 bg-rayo-panel border border-rayo-purple/30 rounded transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-rayo-yellow focus:border-rayo-yellow/80 focus:shadow-[0_0_20px_rgba(250,204,21,0.18)] text-white placeholder-white/40 hover:border-rayo-purple/60 resize-none"
               style={{ touchAction: 'manipulation', minHeight: '120px', fontSize: '16px' }}
             />
           </div>
@@ -399,7 +399,7 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
               name="wantContact"
               checked={formData.wantContact}
               onChange={handleChange}
-              className="w-5 h-5 mt-1 accent-rayo-yellow cursor-pointer border border-white/20 rounded"
+              className="w-5 h-5 mt-1 accent-rayo-yellow cursor-pointer border border-rayo-purple/40 rounded"
               style={{ touchAction: 'manipulation' }}
             />
             <label htmlFor="wantContact" className="text-sm text-white">
@@ -408,13 +408,13 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
           </div>
 
           {formData.wantContact && (
-            <div className="space-y-4 pl-8 border-l-2 border-rayo-yellow/30">
+            <div className="space-y-4 pl-8 border-l-2 border-rayo-purple/40">
               <p className="text-sm text-rayo-muted">
                 Selecciona cómo prefieres que te contactemos <span className="text-rayo-yellow">*</span>
               </p>
 
               <div className="space-y-2">
-                <label className="flex items-center gap-3 p-3 border border-white/10 rounded hover:border-rayo-yellow/50 transition-colors cursor-pointer">
+                <label className="flex items-center gap-3 p-3 border border-rayo-purple/25 rounded hover:border-rayo-purple/70 hover:bg-rayo-purple/10 transition-all duration-300 cursor-pointer">
                   <input
                     type="radio"
                     name="contactMethod"
@@ -427,7 +427,7 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
                   <span className="text-sm text-white font-semibold">WhatsApp</span>
                 </label>
 
-                <label className="flex items-center gap-3 p-3 border border-white/10 rounded hover:border-rayo-yellow/50 transition-colors cursor-pointer">
+                <label className="flex items-center gap-3 p-3 border border-rayo-purple/25 rounded hover:border-rayo-purple/70 hover:bg-rayo-purple/10 transition-all duration-300 cursor-pointer">
                   <input
                     type="radio"
                     name="contactMethod"
@@ -440,7 +440,7 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
                   <span className="text-sm text-white font-semibold">Correo electrónico</span>
                 </label>
 
-                <label className="flex items-center gap-3 p-3 border border-white/10 rounded hover:border-rayo-yellow/50 transition-colors cursor-pointer">
+                <label className="flex items-center gap-3 p-3 border border-rayo-purple/25 rounded hover:border-rayo-purple/70 hover:bg-rayo-purple/10 transition-all duration-300 cursor-pointer">
                   <input
                     type="radio"
                     name="contactMethod"
@@ -470,7 +470,7 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
               name="acceptTerms"
               checked={formData.acceptTerms}
               onChange={handleChange}
-              className="w-5 h-5 mt-1 accent-rayo-yellow cursor-pointer border border-white/20 rounded"
+              className="w-5 h-5 mt-1 accent-rayo-yellow cursor-pointer border border-rayo-purple/40 rounded"
               style={{ touchAction: 'manipulation' }}
             />
             <label htmlFor="acceptTerms" className="text-sm text-white">

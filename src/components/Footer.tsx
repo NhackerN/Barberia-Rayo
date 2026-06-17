@@ -4,7 +4,7 @@ import { LogoMark } from './LogoMark'
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-black py-10">
+    <footer className="border-t border-rayo-purple/30 bg-[#030303] py-10 shadow-[inset_0_1px_0_rgba(124,58,237,0.18)]">
       <div className="section-shell">
         <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
           <Link to="/#inicio" className="flex items-center gap-3">
@@ -24,21 +24,21 @@ export function Footer() {
               <Link
                 key={link.href}
                 to={`/${link.href}`}
-                className="text-sm font-semibold text-rayo-muted transition-colors hover:text-rayo-yellow"
+                className="text-sm font-semibold text-rayo-muted transition-colors duration-300 hover:text-rayo-purple"
               >
                 {link.label}
               </Link>
             ))}
             <Link
               to={BOOKING_FORM_PATH}
-              className="text-sm font-semibold text-rayo-yellow"
+              className="text-sm font-semibold text-rayo-yellow transition-colors duration-300 hover:text-rayo-purple"
             >
               Agendar
             </Link>
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-6 text-sm text-rayo-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 flex flex-col gap-3 border-t border-rayo-purple/20 pt-6 text-sm text-rayo-muted sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Barbería Rayo. Derechos reservados.</p>
           <p>Diseñado con estilo para Barbería Rayo</p>
         </div>

@@ -31,7 +31,7 @@ export default function BookingPage() {
   if (isSubmitted) {
     return (
       <div className="min-h-[calc(100vh-200px)] flex items-center justify-center px-4 py-24">
-        <div className="max-w-md w-full text-center">
+        <div className="max-w-md w-full border border-rayo-purple/25 bg-rayo-surface p-8 text-center shadow-[0_0_30px_rgba(124,58,237,0.16)]">
           <div className="mb-6 flex justify-center">
             <CheckCircle className="h-20 w-20 text-rayo-yellow animate-pulse" />
           </div>
@@ -55,11 +55,11 @@ export default function BookingPage() {
 
   return (
     <div className="bg-rayo-black">
-      <section className="border-b border-white/10 bg-[#080808] py-16 sm:py-20">
+      <section className="border-b border-rayo-purple/25 bg-rayo-surface py-16 shadow-[inset_0_-1px_0_rgba(124,58,237,0.12)] sm:py-20">
         <div className="section-shell">
           <button
             onClick={handleBackHome}
-            className="inline-flex items-center gap-2 mb-6 text-rayo-yellow hover:text-rayo-amber transition-colors font-semibold"
+            className="inline-flex items-center gap-2 mb-6 text-rayo-yellow hover:text-rayo-purple transition-colors font-semibold"
           >
             <ArrowLeft className="h-4 w-4" />
             Volver
