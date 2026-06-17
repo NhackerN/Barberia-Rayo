@@ -14,7 +14,7 @@ export function Hero() {
         <img
           src={heroImage}
           alt="Corte fade terminado en Barbería Rayo"
-          className="hero-image absolute inset-y-0 right-0 h-full w-full object-cover object-[55%_42%] sm:object-[62%_44%] lg:object-[70%_45%]"
+          className="hero-image absolute inset-y-0 right-0 h-full w-full object-cover object-[50%_47%] sm:object-[52%_47%] lg:w-[68%] lg:object-contain lg:object-center xl:w-[62%]"
         />
         <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(124,58,237,0.20),rgba(0,0,0,0.75)),linear-gradient(90deg,#050505_0%,rgba(5,5,5,0.93)_30%,rgba(5,5,5,0.46)_67%,rgba(5,5,5,0.9)_100%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_22%_28%,rgba(124,58,237,0.28),transparent_34%),radial-gradient(ellipse_at_80%_30%,rgba(250,204,21,0.14),transparent_28%),linear-gradient(90deg,rgba(124,58,237,0.16),transparent_18%,transparent_82%,rgba(124,58,237,0.18))]" />

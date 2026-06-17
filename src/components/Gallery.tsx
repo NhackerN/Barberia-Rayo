@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react'
 import { ArrowUpRight, X } from 'lucide-react'
-import barberActionImage from '../assets/barberia-rayo-hero.png'
 import fadeDetailImage from '../assets/barberia-rayo-hero-real.jpg'
 import { GALLERY_ITEMS } from '../constants'
 
 export function Gallery() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
-  const selectedItem =
-    selectedIndex === null ? null : getGalleryVisual(selectedIndex)
+  const selectedItem = selectedIndex === null ? null : galleryItems[selectedIndex]
 
   useEffect(() => {
     if (selectedIndex === null) {
@@ -38,22 +36,20 @@ export function Gallery() {
           <h2 className="display-title">CORTES, DETALLES Y ESTILO RAYO</h2>
         </div>
 
-        <div className="mt-12 grid auto-rows-[220px] gap-4 md:grid-cols-3">
-          {GALLERY_ITEMS.map((item, index) => (
+        <div className="mt-12 grid max-w-3xl auto-rows-[360px] gap-4 sm:auto-rows-[440px]">
+          {galleryItems.map((item, index) => (
             <button
               type="button"
-              key={item}
+              key={item.title}
               onClick={() => setSelectedIndex(index)}
-              aria-label={`Ver detalle de ${item}`}
-              className={`gallery-tile group relative cursor-pointer overflow-hidden border border-rayo-purple/20 bg-rayo-panel p-0 text-left shadow-[0_18px_45px_rgba(0,0,0,0.24)] transition-all duration-300 hover:border-rayo-purple/70 hover:shadow-[0_0_30px_rgba(124,58,237,0.20)] ${
-                index === 1 || index === 4 ? 'md:row-span-2' : ''
-              }`}
+              aria-label={`Ver detalle de ${item.title}`}
+              className="gallery-tile group relative cursor-pointer overflow-hidden border border-rayo-purple/20 bg-rayo-panel p-0 text-left shadow-[0_18px_45px_rgba(0,0,0,0.24)] transition-all duration-300 hover:border-rayo-purple/70 hover:shadow-[0_0_30px_rgba(124,58,237,0.20)]"
             >
               <img
-                src={getGalleryVisual(index).src}
-                alt={getGalleryVisual(index).alt}
+                src={item.src}
+                alt={item.alt}
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                style={{ objectPosition: getGalleryVisual(index).position }}
+                style={{ objectPosition: item.position }}
               />
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(124,58,237,0.16),transparent_30%),linear-gradient(135deg,rgba(0,0,0,0.06),rgba(91,33,182,0.12))]" />
               <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black via-black/75 to-transparent" />
@@ -65,7 +61,7 @@ export function Gallery() {
                     Foto {String(index + 1).padStart(2, '0')}
                   </span>
                   <span className="mt-1 block font-display text-3xl text-white transition-colors duration-300 group-hover:text-white">
-                    {item}
+                    {item.title}
                   </span>
                 </span>
                 <span className="grid h-11 w-11 place-items-center border border-white/20 text-white transition-colors duration-300 group-hover:border-rayo-yellow group-hover:text-rayo-yellow">
@@ -87,7 +83,7 @@ export function Gallery() {
           className="fixed inset-0 z-[80] grid place-items-center bg-black/[0.88] p-4 backdrop-blur-md"
           role="dialog"
           aria-modal="true"
-          aria-label={`Detalle de ${GALLERY_ITEMS[selectedIndex]}`}
+          aria-label={`Detalle de ${selectedItem.title}`}
           onClick={() => setSelectedIndex(null)}
         >
           <button
@@ -116,7 +112,7 @@ export function Gallery() {
                 Foto {String(selectedIndex + 1).padStart(2, '0')}
               </p>
               <h3 className="mt-1 font-display text-4xl text-white sm:text-5xl">
-                {GALLERY_ITEMS[selectedIndex]}
+                {selectedItem.title}
               </h3>
             </div>
           </div>
@@ -126,39 +122,11 @@ export function Gallery() {
   )
 }
 
-const galleryVisuals = [
+const galleryItems = [
   {
+    title: GALLERY_ITEMS[0],
     src: fadeDetailImage,
     alt: 'Fade limpio con acabado peinado en Barbería Rayo',
-    position: '54% 40%',
+    position: '50% 42%',
   },
-  {
-    src: barberActionImage,
-    alt: 'Barbero trabajando un corte moderno en Barbería Rayo',
-    position: '73% 48%',
-  },
-  {
-    src: fadeDetailImage,
-    alt: 'Detalle lateral de corte fade terminado',
-    position: '72% 44%',
-  },
-  {
-    src: barberActionImage,
-    alt: 'Textura urbana en sesión de corte premium',
-    position: '82% 50%',
-  },
-  {
-    src: fadeDetailImage,
-    alt: 'Afeitado y contorno limpio en nuca',
-    position: '48% 62%',
-  },
-  {
-    src: barberActionImage,
-    alt: 'Corte y barba en ambiente premium urbano',
-    position: '68% 44%',
-  },
-]
-
-function getGalleryVisual(index: number) {
-  return galleryVisuals[index % galleryVisuals.length]
-}
+] as const

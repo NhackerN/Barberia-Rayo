@@ -114,7 +114,6 @@
 @layer utilities {
   .hero-image {
     filter: saturate(0.82) contrast(1.18) brightness(0.72);
-    transform: scale(1.02);
   }
 
   .gallery-tile::before {
