@@ -1,5 +1,21 @@
-export const WHATSAPP_URL =
-  'https://wa.me/525512345678?text=Hola%20Barber%C3%ADa%20Rayo%2C%20quiero%20agendar%20mi%20corte'
+const BUSINESS_WHATSAPP_NUMBER =
+  import.meta.env.VITE_BUSINESS_WHATSAPP_NUMBER?.replace(/\D/g, '') ?? ''
+
+if (!BUSINESS_WHATSAPP_NUMBER) {
+  console.warn(
+    'Falta configurar VITE_BUSINESS_WHATSAPP_NUMBER para el enlace de WhatsApp del negocio.'
+  )
+}
+
+export function buildBusinessWhatsAppUrl(message: string) {
+  return BUSINESS_WHATSAPP_NUMBER
+    ? `https://wa.me/${BUSINESS_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+    : `https://wa.me/?text=${encodeURIComponent(message)}`
+}
+
+export const WHATSAPP_URL = buildBusinessWhatsAppUrl(
+  'Hola Barbería Rayo, quiero agendar mi corte'
+)
 
 export const BOOKING_FORM_PATH = '/agendar#formulario'
 
