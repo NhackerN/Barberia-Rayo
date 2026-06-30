@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Zap } from 'lucide-react'
+import { WHATSAPP_URL } from '../constants'
 import SelectInput from './SelectInput'
 
 interface FormData {
@@ -139,14 +140,17 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
       ...formData,
       bookingId: createBookingId(),
     }
+    const whatsappWindow = window.open('', '_blank')
 
     try {
       await sendWeb3FormsNotification(bookingPayload)
       await syncGoogleCalendar(bookingPayload).catch((error) => {
         console.warn('Google Calendar sync failed:', error)
       })
+      openBookingWhatsApp(bookingPayload, whatsappWindow)
       onSubmit()
     } catch (error) {
+      whatsappWindow?.close()
       setErrors((prev) => ({
         ...prev,
         submit:
@@ -503,6 +507,51 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
 
 function createBookingId() {
   return globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`
+}
+
+function openBookingWhatsApp(
+  bookingPayload: BookingPayload,
+  preopenedWindow: Window | null
+) {
+  const whatsappUrl = buildBookingWhatsAppUrl(bookingPayload)
+
+  if (preopenedWindow && !preopenedWindow.closed) {
+    preopenedWindow.opener = null
+    preopenedWindow.location.href = whatsappUrl
+    return
+  }
+
+  window.location.href = whatsappUrl
+}
+
+function buildBookingWhatsAppUrl(bookingPayload: BookingPayload) {
+  const [baseUrl] = WHATSAPP_URL.split('?')
+
+  return `${baseUrl}?text=${encodeURIComponent(buildWhatsAppMessage(bookingPayload))}`
+}
+
+function buildWhatsAppMessage(bookingPayload: BookingPayload) {
+  return [
+    'Hola Barbería Rayo, quiero confirmar mi cita.',
+    '',
+    `Nombre: ${bookingPayload.fullName}`,
+    `Telefono / WhatsApp: ${bookingPayload.phone}`,
+    bookingPayload.email ? `Correo: ${bookingPayload.email}` : null,
+    `Servicio: ${bookingPayload.service}`,
+    `Barbero: ${bookingPayload.barber}`,
+    `Fecha: ${bookingPayload.date}`,
+    `Hora: ${bookingPayload.time}`,
+    bookingPayload.description
+      ? `Como me gustaria mi corte: ${bookingPayload.description}`
+      : null,
+    bookingPayload.comments
+      ? `Comentarios adicionales: ${bookingPayload.comments}`
+      : null,
+    '',
+    'Quedo pendiente de confirmacion.',
+  ]
+    .filter(Boolean)
+    .join('\n')
 }
 
 async function sendWeb3FormsNotification(bookingPayload: BookingPayload) {
