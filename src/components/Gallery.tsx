@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { ArrowUpRight, X } from 'lucide-react'
+import burstFadeImage from '../assets/BurstFade.jpeg'
 import fadeDetailImage from '../assets/barberia-rayo-hero-real.jpg'
+import midFadeSideImage from '../assets/MidFade1.jpg'
+import midFadeBackImage from '../assets/MidFade2.jpg'
 import { GALLERY_ITEMS } from '../constants'
 
 export function Gallery() {
@@ -36,7 +39,7 @@ export function Gallery() {
           <h2 className="display-title">CORTES, DETALLES Y ESTILO RAYO</h2>
         </div>
 
-        <div className="mt-12 grid max-w-3xl auto-rows-[360px] gap-4 sm:auto-rows-[440px]">
+        <div className="mt-12 grid max-w-6xl auto-rows-[360px] gap-4 sm:auto-rows-[440px] lg:grid-cols-2">
           {galleryItems.map((item, index) => (
             <button
               type="button"
@@ -45,12 +48,23 @@ export function Gallery() {
               aria-label={`Ver detalle de ${item.title}`}
               className="gallery-tile group relative cursor-pointer overflow-hidden border border-rayo-purple/20 bg-rayo-panel p-0 text-left shadow-[0_18px_45px_rgba(0,0,0,0.24)] transition-all duration-300 hover:border-rayo-purple/70 hover:shadow-[0_0_30px_rgba(124,58,237,0.20)]"
             >
-              <img
-                src={item.src}
-                alt={item.alt}
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                style={{ objectPosition: item.position }}
-              />
+              <div
+                className={`absolute inset-0 grid ${
+                  item.images.length > 1 ? 'grid-cols-2 gap-px bg-rayo-purple/25' : ''
+                }`}
+              >
+                {item.images.map((image) => (
+                  <img
+                    key={image.src}
+                    src={image.src}
+                    alt={image.alt}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    style={{ objectPosition: image.position }}
+                  />
+                ))}
+              </div>
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(124,58,237,0.16),transparent_30%),linear-gradient(135deg,rgba(0,0,0,0.06),rgba(91,33,182,0.12))]" />
               <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black via-black/75 to-transparent" />
               <div className="absolute right-0 top-0 h-14 w-14 translate-x-7 -translate-y-7 rotate-45 bg-[linear-gradient(135deg,#FACC15,#7C3AED)] transition-all duration-300 group-hover:translate-x-4 group-hover:-translate-y-4" />
@@ -102,11 +116,24 @@ export function Gallery() {
             className="relative max-h-[86vh] w-full max-w-5xl overflow-hidden border border-rayo-purple/35 bg-rayo-surface shadow-[0_0_40px_rgba(124,58,237,0.24)]"
             onClick={(event) => event.stopPropagation()}
           >
-            <img
-              src={selectedItem.src}
-              alt={selectedItem.alt}
-              className="max-h-[86vh] w-full object-contain"
-            />
+            <div
+              className={`grid ${
+                selectedItem.images.length > 1 ? 'grid-cols-2 gap-px bg-rayo-purple/25' : ''
+              }`}
+            >
+              {selectedItem.images.map((image) => (
+                <img
+                  key={image.src}
+                  src={image.src}
+                  alt={image.alt}
+                  className={
+                    selectedItem.images.length > 1
+                      ? 'h-[82vh] w-full object-contain'
+                      : 'max-h-[86vh] w-full object-contain'
+                  }
+                />
+              ))}
+            </div>
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/70 to-transparent p-5 text-left sm:p-7">
               <p className="text-sm font-bold text-rayo-yellow">
                 Foto {String(selectedIndex + 1).padStart(2, '0')}
@@ -125,8 +152,37 @@ export function Gallery() {
 const galleryItems = [
   {
     title: GALLERY_ITEMS[0],
-    src: fadeDetailImage,
-    alt: 'Fade limpio con acabado peinado en Barbería Rayo',
-    position: '50% 42%',
+    images: [
+      {
+        src: fadeDetailImage,
+        alt: 'Fade limpio con acabado peinado en Barbería Rayo',
+        position: '50% 42%',
+      },
+    ],
+  },
+  {
+    title: GALLERY_ITEMS[1],
+    images: [
+      {
+        src: midFadeSideImage,
+        alt: 'Midfade lateral con textura en Barbería Rayo',
+        position: '58% 36%',
+      },
+      {
+        src: midFadeBackImage,
+        alt: 'Midfade visto desde atrás en Barbería Rayo',
+        position: '50% 34%',
+      },
+    ],
+  },
+  {
+    title: GALLERY_ITEMS[2],
+    images: [
+      {
+        src: burstFadeImage,
+        alt: 'Burst fade con acabado definido en Barbería Rayo',
+        position: '50% 38%',
+      },
+    ],
   },
 ] as const

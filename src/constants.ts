@@ -81,11 +81,8 @@ export const EXPERIENCE_POINTS = [
 
 export const GALLERY_ITEMS = [
   'Fade limpio',
-  'Corte moderno',
-  'Barba perfilada',
-  'Textura urbana',
-  'Afeitado preciso',
-  'Corte + barba',
+  'Midfade',
+  'Burst fade',
 ] as const
 
 export const HOURS = [
