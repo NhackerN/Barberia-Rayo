@@ -134,23 +134,26 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
       return
     }
 
-    setIsSubmitting(true)
-
     const bookingPayload: BookingPayload = {
       ...formData,
       bookingId: createBookingId(),
     }
-    const whatsappWindow = window.open('', '_blank')
+
+    window.open(
+      buildBookingWhatsAppUrl(bookingPayload),
+      '_blank',
+      'noopener,noreferrer'
+    )
+
+    setIsSubmitting(true)
 
     try {
       await sendWeb3FormsNotification(bookingPayload)
       await syncGoogleCalendar(bookingPayload).catch((error) => {
         console.warn('Google Calendar sync failed:', error)
       })
-      openBookingWhatsApp(bookingPayload, whatsappWindow)
       onSubmit()
     } catch (error) {
-      whatsappWindow?.close()
       setErrors((prev) => ({
         ...prev,
         submit:
@@ -507,21 +510,6 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
 
 function createBookingId() {
   return globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`
-}
-
-function openBookingWhatsApp(
-  bookingPayload: BookingPayload,
-  preopenedWindow: Window | null
-) {
-  const whatsappUrl = buildBookingWhatsAppUrl(bookingPayload)
-
-  if (preopenedWindow && !preopenedWindow.closed) {
-    preopenedWindow.opener = null
-    preopenedWindow.location.href = whatsappUrl
-    return
-  }
-
-  window.location.href = whatsappUrl
 }
 
 function buildBookingWhatsAppUrl(bookingPayload: BookingPayload) {
