@@ -37,9 +37,8 @@ const SERVICES = [
 
 const BARBERS = [
   'Sin preferencia',
-  'Barbero 1',
-  'Barbero 2',
-  'Barbero 3',
+  'Rayo',
+  'Angel',
 ]
 
 interface BookingFormProps {
